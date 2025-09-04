@@ -136,6 +136,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dag1 <span class="ot">=</span> <span class="fu">model2network</span>(<span class="st">"[h0302][h0303][region][CO][SO2][valor_HCST][valor_INSULINA][estrato|municipio][municipio|entidad][entidad|region][valor_PCR|valor_HCST:SO2][valor_VIT_B12|valor_HCST:estrato][valor_GLU_SUERO|valor_PCR][valor_COLEST|valor_PCR][valor_VIT_D|h0303][valor_HB1AC|valor_INSULINA][valor_ALBU|CO][PM10|estrato][hb02|estrato:h0302]"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>aún tengo duda en esto, estoy por confirmar: “más prot C reactiva con SO2 (?), pero si con más Colesterol y glucosa”, sería como que el SO2, Colesterol y Glucosa los 3 dependen de la proteína c reactiva? o de dónde a dónde va la dependencia? También con ésta: “Más Homocisteína con menos B12 y más Prot&nbsp;C&nbsp;reactiva.” Sería que la B12 y prto C reactiva dependen de la&nbsp;Homocisteína?</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>dag1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -241,6 +242,46 @@ Adjuntando el paquete: 'graph'</code></pre>
 <div>
 <figure class="figure">
 <p><img src="DAGs-propuestas_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>DAG 2: Propuesta por el biomédico y PhD candidate en human genetics Asbiel Garibaldi.</p>
+<p>por un lado la contaminacion por particulas finas tipo pm25 y pm10 se suele ver con inflamacion en el cuerpo, eso al rato se refleja en niveles altos de proteina c reactiva y ya a largo plazo a veces hasta en la hemoglobina glucosilada, los oxidos de nitrogeno y el dioxido de azufre tambien generan estres oxidativo, entonces pueden subir la homocisteina y dar mas procesos inflamatorios. el monoxido de carbono afecta la oxigenacion y eso igual pega en la hemoglobina y si nos ponemos mas criticos hasta en la funcion renal medida con la creatinina. en estilo de vida, pues comer mucha carne roja sube el acido urico, las dietas con mucha grasa se ven en colesterol y trigliceridos, y si no comes frutas/verduras bajas en folato, b12 y vitamina d.&nbsp;la edad obvio aumenta riesgo de glucosa e insulina elevadas, y entre hombres y mujeres cambian cosas como la ferritina o la hemoglobina por el ciclo menstrual vivir en zonas urbanas te expone a mas contaminantes y da un perfil inflamatorio/metabolico mas alterado q en zonas rurales, aunque tmb en el campo se ven broncas x contaminantes de cultivos,&nbsp;pesticidas&nbsp;etc</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>dag2 <span class="ot">=</span> <span class="fu">model2network</span>(<span class="st">"[h0302][h0303][region][estrato|region][CO|estrato][SO2|estrato][NOx|estrato][PM10|estrato][PM25|estrato][valor_HCST|NOx:SO2][valor_PCR|PM10:PM25:valor_HCST][hb02|h0302:CO][valor_CREAT|CO:h0303][valor_GLU_SUERO|h0303][valor_INSULINA|h0303][valor_HB1AC|valor_GLU_SUERO:valor_INSULINA:valor_PCR][valor_FERRITINA|h0302][valor_VIT_D|h0303:estrato][valor_VIT_B12|estrato][valor_FOL|estrato][valor_COLEST|estrato:h0303][valor_TRIG|estrato:h0303][valor_AC_URICO|estrato:h0303]"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>dag2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  Random/Generated Bayesian network
+
+  model:
+   [h0302][h0303][region][estrato|region][valor_FERRITINA|h0302]
+   [valor_GLU_SUERO|h0303][valor_INSULINA|h0303][CO|estrato][NOx|estrato]
+   [PM10|estrato][PM25|estrato][SO2|estrato][valor_AC_URICO|estrato:h0303]
+   [valor_COLEST|estrato:h0303][valor_FOL|estrato][valor_TRIG|estrato:h0303]
+   [valor_VIT_B12|estrato][valor_VIT_D|estrato:h0303][hb02|CO:h0302]
+   [valor_CREAT|CO:h0303][valor_HCST|NOx:SO2][valor_PCR|PM10:PM25:valor_HCST]
+   [valor_HB1AC|valor_GLU_SUERO:valor_INSULINA:valor_PCR]
+  nodes:                                 23 
+  arcs:                                  31 
+    undirected arcs:                     0 
+    directed arcs:                       31 
+  average markov blanket size:           3.57 
+  average neighbourhood size:            2.70 
+  average branching factor:              1.35 
+
+  generation algorithm:                  Empty </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">graphviz.plot</span>(dag2, <span class="at">shape =</span> <span class="st">"ellipse"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DAGs-propuestas_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>

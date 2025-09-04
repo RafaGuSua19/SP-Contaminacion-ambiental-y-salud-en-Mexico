@@ -40,7 +40,7 @@ Propuesta por el nutriólogo y especialista en ciencias médicas Alberto Bricio.
 ```{r}
 dag1 = model2network("[h0302][h0303][region][CO][SO2][valor_HCST][valor_INSULINA][estrato|municipio][municipio|entidad][entidad|region][valor_PCR|valor_HCST:SO2][valor_VIT_B12|valor_HCST:estrato][valor_GLU_SUERO|valor_PCR][valor_COLEST|valor_PCR][valor_VIT_D|h0303][valor_HB1AC|valor_INSULINA][valor_ALBU|CO][PM10|estrato][hb02|estrato:h0302]") 
 ```
-
+aún tengo duda en esto, estoy por confirmar: "más prot C reactiva con SO2 (?), pero si con más Colesterol y glucosa", sería como que el SO2, Colesterol y Glucosa los 3 dependen de la proteína c reactiva? o de dónde a dónde va la dependencia? También con ésta: "Más Homocisteína con menos B12 y más Prot C reactiva." Sería que la B12 y prto C reactiva dependen de la Homocisteína?
 ```{r}
 dag1
 ```
@@ -48,5 +48,18 @@ dag1
 ```{r}
 library(Rgraphviz)
 graphviz.plot(dag1, shape = "ellipse")
+```
+DAG 2:
+Propuesta por el biomédico y PhD candidate en human genetics Asbiel Garibaldi.
+
+por un lado la contaminacion por particulas finas tipo pm25 y pm10 se suele ver con inflamacion en el cuerpo, eso al rato se refleja en niveles altos de proteina c reactiva y ya a largo plazo a veces hasta en la hemoglobina glucosilada, los oxidos de nitrogeno y el dioxido de azufre tambien generan estres oxidativo, entonces pueden subir la homocisteina y dar mas procesos inflamatorios. el monoxido de carbono afecta la oxigenacion y eso igual pega en la hemoglobina y si nos ponemos mas criticos hasta en la funcion renal medida con la creatinina. en estilo de vida, pues comer mucha carne roja sube el acido urico, las dietas con mucha grasa se ven en colesterol y trigliceridos, y si no comes frutas/verduras bajas en folato, b12 y vitamina d. la edad obvio aumenta riesgo de glucosa e insulina elevadas, y entre hombres y mujeres cambian cosas como la ferritina o la hemoglobina por el ciclo menstrual vivir en zonas urbanas te expone a mas contaminantes y da un perfil inflamatorio/metabolico mas alterado q en zonas rurales, aunque tmb en el campo se ven broncas x contaminantes de cultivos, pesticidas etc
+```{r}
+dag2 = model2network("[h0302][h0303][region][estrato|region][CO|estrato][SO2|estrato][NOx|estrato][PM10|estrato][PM25|estrato][valor_HCST|NOx:SO2][valor_PCR|PM10:PM25:valor_HCST][hb02|h0302:CO][valor_CREAT|CO:h0303][valor_GLU_SUERO|h0303][valor_INSULINA|h0303][valor_HB1AC|valor_GLU_SUERO:valor_INSULINA:valor_PCR][valor_FERRITINA|h0302][valor_VIT_D|h0303:estrato][valor_VIT_B12|estrato][valor_FOL|estrato][valor_COLEST|estrato:h0303][valor_TRIG|estrato:h0303][valor_AC_URICO|estrato:h0303]") 
+```
+```{r}
+dag2
+```
+```{r}
+graphviz.plot(dag2, shape = "ellipse")
 ```
 
