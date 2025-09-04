@@ -4,23 +4,49 @@ format: html
 editor: visual
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
+## DAGs propuestas por especialistas
 ```{r}
-1 + 1
+#install.packages("tidyverse")
+#install.packages("bnlearn")
 ```
 
-You can add options to executable code like this
-
 ```{r}
-#| echo: false
-2 * 2
+library(tidyverse)
+library(bnlearn)
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+```{r}
+#data = read_csv("base de datos limpia")
+#head(data)
+```
+
+```{r}
+#data = data |> #pipeline
+        #select(-crop)#todo menos crop
+```
+
+```{r}
+#head(data)
+```
+
+```{r}
+#colnames(data) = c("N", "P", "K", "T", "H", "pH", "R", "Y") #cambiamos el nombre de las columnas, en caso de ser necesario, si no las mismas variables permanecen
+```
+
+
+DAG 1:
+Propuesta por el nutriólogo y especialista en ciencias médicas Alberto Bricio.
+
+```{r}
+dag1 = model2network("[h0302][h0303][region][CO][SO2][valor_HCST][valor_INSULINA][estrato|municipio][municipio|entidad][entidad|region][valor_PCR|valor_HCST:SO2][valor_VIT_B12|valor_HCST:estrato][valor_GLU_SUERO|valor_PCR][valor_COLEST|valor_PCR][valor_VIT_D|h0303][valor_HB1AC|valor_INSULINA][valor_ALBU|CO][PM10|estrato][hb02|estrato:h0302]") 
+```
+
+```{r}
+dag1
+```
+
+```{r}
+library(Rgraphviz)
+graphviz.plot(dag1, shape = "ellipse")
+```
+
