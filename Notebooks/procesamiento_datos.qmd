@@ -27,7 +27,7 @@ head(data2)
 
 ```{r}
 demografico <- data2 %>% 
-  select(FOLIO_I, h0302, h0303, estrato, region)
+  select(FOLIO_I, h0302, h0303, estrato, region, entidad1, desc_ent1, municipio1, desc_mun1)
 
 head(demografico)
 ```
