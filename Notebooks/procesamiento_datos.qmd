@@ -47,3 +47,79 @@ demo_sangre <- inner_join(demografico, sangre, by = "FOLIO_I")
 head(demo_sangre)
 ```
 
+
+
+
+```{r}
+data3 = read.csv("../data/calidad_aire_2025.csv")
+head(data3)
+```
+
+```{r}
+data3_filtrado <- data3[data3$Tipo_de_Fuente == "Fuentes fijas", ]
+head(data3_filtrado)
+```
+
+```{r}
+library(stringr)
+
+# Quitar el código inicial
+demo_sangre$desc_mun1 <- sub("^\\d+\\s+", "", demo_sangre$desc_mun1)
+
+# Pasar a minúsculas y poner en formato ej: Zapopan
+demo_sangre$desc_mun1 <- str_to_title(tolower(demo_sangre$desc_mun1))
+```
+
+
+```{r}
+head(demo_sangre)
+```
+
+
+```{r}
+# Quitar el código inicial
+demo_sangre$desc_ent1 <- sub("^\\d+\\s+", "", demo_sangre$desc_ent1)
+
+# Pasar a minúsculas y poner en formato ej: Jalisco
+demo_sangre$desc_ent1 <- str_to_title(tolower(demo_sangre$desc_ent1))
+```
+
+```{r}
+head(demo_sangre)
+```
+
+```{r}
+# write.csv(demo_sangre, "../data/data_final.csv", row.names = FALSE)
+```
+
+
+```{r}
+df_merged <- merge(
+  demo_sangre, 
+  data3_filtrado, 
+  by.x = c("desc_ent1", "desc_mun1"),   
+  by.y = c("Entidad", "Municipio"),  
+  all.x = TRUE          
+)
+```
+
+```{r}
+head(df_merged)
+```
+
+```{r}
+names(df_merged)
+```
+```{r}
+df_merged <- df_merged %>% 
+  select(-entidad1, -municipio1)
+```
+
+```{r}
+head(df_merged)
+```
+
+```{r}
+write.csv(df_merged, "../data/data_final.csv", row.names = FALSE)
+```
+
