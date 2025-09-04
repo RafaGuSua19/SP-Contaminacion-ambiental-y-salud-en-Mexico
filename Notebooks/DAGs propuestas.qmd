@@ -36,6 +36,14 @@ library(bnlearn)
 
 DAG 1:
 Propuesta por el nutriólogo y especialista en ciencias médicas Alberto Bricio.
+Sexo tiene que ver con Hb (menor en mujeres).
+Lo rural se asocia con menores Hb y puede que con PM10 (?)
+Pensaría que mientras más CO, menos Albúmina
+Más insulina con HbA1c y las demás del perfíl de lípidos.
+menos Vitamina D mientras más edad.
+más prot C reactiva con SO2 (?), pero si con más Colesterol y glucosa
+Puede que más B12 en área urbana.
+Más Homocisteína con menos B12 y más Prot C reactiva.
 
 ```{r}
 dag1 = model2network("[h0302][h0303][region][CO][SO2][valor_HCST][valor_INSULINA][estrato|municipio][municipio|entidad][entidad|region][valor_PCR|valor_HCST:SO2][valor_VIT_B12|valor_HCST:estrato][valor_GLU_SUERO|valor_PCR][valor_COLEST|valor_PCR][valor_VIT_D|h0303][valor_HB1AC|valor_INSULINA][valor_ALBU|CO][PM10|estrato][hb02|estrato:h0302]") 
