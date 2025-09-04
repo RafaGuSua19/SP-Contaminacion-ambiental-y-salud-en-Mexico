@@ -41,7 +41,7 @@ head(sangre)
 
 
 ```{r}
-# Unir sin duplicar columnas
+# Unir las tablas
 demo_sangre <- inner_join(demografico, sangre, by = "FOLIO_I")
 
 head(demo_sangre)
