@@ -40,7 +40,7 @@ Propuesta por el nutriólogo y especialista en ciencias médicas Alberto Bricio.
 ```{r}
 dag1 = model2network("[h0302][h0303][region][CO][SO2][valor_HCST][valor_INSULINA][estrato|municipio][municipio|entidad][entidad|region][valor_PCR|valor_HCST:SO2][valor_VIT_B12|valor_HCST:estrato][valor_GLU_SUERO|valor_PCR][valor_COLEST|valor_PCR][valor_VIT_D|h0303][valor_HB1AC|valor_INSULINA][valor_ALBU|CO][PM10|estrato][hb02|estrato:h0302]") 
 ```
-aún tengo duda en esto, estoy por confirmar: "más prot C reactiva con SO2 (?), pero si con más Colesterol y glucosa", sería como que el SO2, Colesterol y Glucosa los 3 dependen de la proteína c reactiva? o de dónde a dónde va la dependencia? También con ésta: "Más Homocisteína con menos B12 y más Prot C reactiva." Sería que la B12 y prto C reactiva dependen de la Homocisteína?
+aún tengo duda en esto, estoy por confirmar: "más prot C reactiva con SO2 (?), pero si con más Colesterol y glucosa", sería como que el SO2, Colesterol y Glucosa los 3 dependen de la proteína c reactiva? o de dónde a dónde va la dependencia? También con ésta: "Más Homocisteína con menos B12 y más Prot C reactiva." Sería que la B12 y prto C reactiva dependen de la Homocisteína? También falta agregarle la relación de la insulina y lípidos
 ```{r}
 dag1
 ```
@@ -62,4 +62,16 @@ dag2
 ```{r}
 graphviz.plot(dag2, shape = "ellipse")
 ```
+DAG 3:
+Propuesta por el médico geriatra Jesús Francisco Gutiérrez Suárez.
+```{r}
+dag3 = model2network("[h0302][h0303][region][estrato|municipio][municipio|entidad][entidad|region][valor_VIT_B12][valor_FERRITINA][valor_FOL][CO|estrato][NH3|estrato][SO2|estrato][NOx][hb02|h0302:h0303:region:valor_VIT_B12:valor_FOL:valor_FERRITINA:CO:NOx][valor_STFR_FEB23|region:hb02][valor_GLU_SUERO|h0303][valor_HB1AC|h0302:h0303:hb02:valor_GLU_SUERO][valor_INSULINA|valor_GLU_SUERO][valor_COL_LDL|h0302][valor_COLEST|h0302:h0303][valor_TRIG|h0303]") 
+```
+```{r}
+dag3
+```
+```{r}
+graphviz.plot(dag3, shape = "rectangle")
+```
+
 

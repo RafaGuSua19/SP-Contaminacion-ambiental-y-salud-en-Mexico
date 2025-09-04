@@ -136,7 +136,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dag1 <span class="ot">=</span> <span class="fu">model2network</span>(<span class="st">"[h0302][h0303][region][CO][SO2][valor_HCST][valor_INSULINA][estrato|municipio][municipio|entidad][entidad|region][valor_PCR|valor_HCST:SO2][valor_VIT_B12|valor_HCST:estrato][valor_GLU_SUERO|valor_PCR][valor_COLEST|valor_PCR][valor_VIT_D|h0303][valor_HB1AC|valor_INSULINA][valor_ALBU|CO][PM10|estrato][hb02|estrato:h0302]"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>aún tengo duda en esto, estoy por confirmar: “más prot C reactiva con SO2 (?), pero si con más Colesterol y glucosa”, sería como que el SO2, Colesterol y Glucosa los 3 dependen de la proteína c reactiva? o de dónde a dónde va la dependencia? También con ésta: “Más Homocisteína con menos B12 y más Prot&nbsp;C&nbsp;reactiva.” Sería que la B12 y prto C reactiva dependen de la&nbsp;Homocisteína?</p>
+<p>aún tengo duda en esto, estoy por confirmar: “más prot C reactiva con SO2 (?), pero si con más Colesterol y glucosa”, sería como que el SO2, Colesterol y Glucosa los 3 dependen de la proteína c reactiva? o de dónde a dónde va la dependencia? También con ésta: “Más Homocisteína con menos B12 y más Prot&nbsp;C&nbsp;reactiva.” Sería que la B12 y prto C reactiva dependen de la&nbsp;Homocisteína? También falta agregarle la relación de la insulina y lípidos</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>dag1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -282,6 +282,45 @@ Adjuntando el paquete: 'graph'</code></pre>
 <div>
 <figure class="figure">
 <p><img src="DAGs-propuestas_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>DAG 3: Propuesta por el médico geriatra Jesús Francisco Gutiérrez Suárez.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>dag3 <span class="ot">=</span> <span class="fu">model2network</span>(<span class="st">"[h0302][h0303][region][estrato|municipio][municipio|entidad][entidad|region][valor_VIT_B12][valor_FERRITINA][valor_FOL][CO|estrato][NH3|estrato][SO2|estrato][NOx][hb02|h0302:h0303:region:valor_VIT_B12:valor_FOL:valor_FERRITINA:CO:NOx][valor_STFR_FEB23|region:hb02][valor_GLU_SUERO|h0303][valor_HB1AC|h0302:h0303:hb02:valor_GLU_SUERO][valor_INSULINA|valor_GLU_SUERO][valor_COL_LDL|h0302][valor_COLEST|h0302:h0303][valor_TRIG|h0303]"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>dag3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  Random/Generated Bayesian network
+
+  model:
+   [h0302][h0303][NOx][region][valor_FERRITINA][valor_FOL][valor_VIT_B12]
+   [entidad|region][valor_COL_LDL|h0302][valor_COLEST|h0302:h0303]
+   [valor_GLU_SUERO|h0303][valor_TRIG|h0303][municipio|entidad]
+   [valor_INSULINA|valor_GLU_SUERO][estrato|municipio][CO|estrato][NH3|estrato]
+   [SO2|estrato]
+   [hb02|CO:h0302:h0303:NOx:region:valor_FERRITINA:valor_FOL:valor_VIT_B12]
+   [valor_HB1AC|h0302:h0303:hb02:valor_GLU_SUERO][valor_STFR_FEB23|hb02:region]
+  nodes:                                 21 
+  arcs:                                  26 
+    undirected arcs:                     0 
+    directed arcs:                       26 
+  average markov blanket size:           5.33 
+  average neighbourhood size:            2.48 
+  average branching factor:              1.24 
+
+  generation algorithm:                  Empty </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">graphviz.plot</span>(dag3, <span class="at">shape =</span> <span class="st">"rectangle"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DAGs-propuestas_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
