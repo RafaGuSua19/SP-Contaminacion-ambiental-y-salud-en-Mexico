@@ -1,0 +1,49 @@
+---
+title: "procesamiento_datos"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(bnlearn)
+library(dplyr)
+
+```
+
+```{r}
+data1 = read.csv("../data/ensanut2022_muestras.csv", sep = ";", stringsAsFactors = TRUE)
+data2 = read.csv("../data/ensanut2022_socdem.csv", sep = ";", stringsAsFactors = TRUE)
+```
+
+
+```{r}
+head(data1)
+```
+
+```{r}
+head(data2)
+```
+
+```{r}
+demografico <- data2 %>% 
+  select(FOLIO_I, h0302, h0303, estrato, region)
+
+head(demografico)
+```
+
+```{r}
+sangre <- data1 %>% 
+  select(FOLIO_I, hb02, valor_AC_URICO, valor_ALBU, valor_ALBU, valor_COL_HDL, valor_COL_LDL, valor_COLEST,valor_CREAT, valor_GLU_SUERO, valor_INSULINA, valor_PCR, valor_TRIG, valor_HB1AC, valor_FERRITINA, valor_FOL, valor_HCST, valor_STFR_FEB23, valor_VIT_B12, valor_VIT_D  )
+
+head(sangre)
+```
+
+
+```{r}
+# Unir sin duplicar columnas
+demo_sangre <- inner_join(demografico, sangre, by = "FOLIO_I")
+
+head(demo_sangre)
+```
+
