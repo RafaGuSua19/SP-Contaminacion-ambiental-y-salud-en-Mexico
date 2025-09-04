@@ -134,7 +134,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>DAG 1: Propuesta por el nutriólogo y especialista en ciencias médicas Alberto Bricio. Sexo tiene que ver con Hb (menor en mujeres). Lo rural se asocia con menores Hb y puede que con PM10 (?) Pensaría que mientras más CO, menos Albúmina Más insulina con HbA1c y las demás del perfíl de lípidos. menos Vitamina D mientras más edad. más prot C reactiva con SO2 (?), pero si con más Colesterol y glucosa Puede que más B12 en área urbana. Más Homocisteína con menos B12 y más Prot&nbsp;C&nbsp;reactiva.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dag1 <span class="ot">=</span> <span class="fu">model2network</span>(<span class="st">"[h0302][h0303][region][CO][SO2][valor_HCST][valor_INSULINA][estrato|municipio][municipio|entidad][entidad|region][valor_PCR|valor_HCST:SO2][valor_VIT_B12|valor_HCST:estrato][valor_GLU_SUERO|valor_PCR][valor_COLEST|valor_PCR][valor_VIT_D|h0303][valor_HB1AC|valor_INSULINA][valor_ALBU|CO][PM10|estrato][hb02|estrato:h0302]"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dag1 <span class="ot">=</span> <span class="fu">model2network</span>(<span class="st">"[h0302][h0303][region][CO|entidad][SO2][valor_HCST][valor_INSULINA|h0302:valor_ALBU][estrato|municipio][municipio|entidad][entidad|region][valor_PCR|valor_HCST:SO2][valor_VIT_B12|valor_HCST:estrato][valor_GLU_SUERO|valor_PCR][valor_COLEST|valor_PCR:valor_INSULINA][valor_VIT_D|h0303:region][valor_HB1AC|valor_INSULINA:valor_ALBU][valor_ALBU|CO][PM10|estrato][hb02|estrato:h0302]"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>aún tengo duda en esto, estoy por confirmar: “más prot C reactiva con SO2 (?), pero si con más Colesterol y glucosa”, sería como que el SO2, Colesterol y Glucosa los 3 dependen de la proteína c reactiva? o de dónde a dónde va la dependencia? También con ésta: “Más Homocisteína con menos B12 y más Prot&nbsp;C&nbsp;reactiva.” Sería que la B12 y prto C reactiva dependen de la&nbsp;Homocisteína? También falta agregarle la relación de la insulina y lípidos</p>
 <div class="cell">
@@ -144,18 +144,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   Random/Generated Bayesian network
 
   model:
-   [CO][h0302][h0303][region][SO2][valor_HCST][valor_INSULINA][entidad|region]
-   [valor_ALBU|CO][valor_HB1AC|valor_INSULINA][valor_PCR|SO2:valor_HCST]
-   [valor_VIT_D|h0303][municipio|entidad][valor_COLEST|valor_PCR]
-   [valor_GLU_SUERO|valor_PCR][estrato|municipio][hb02|estrato:h0302]
-   [PM10|estrato][valor_VIT_B12|estrato:valor_HCST]
+   [h0302][h0303][region][SO2][valor_HCST][entidad|region]
+   [valor_PCR|SO2:valor_HCST][valor_VIT_D|h0303:region][CO|entidad]
+   [municipio|entidad][valor_GLU_SUERO|valor_PCR][estrato|municipio]
+   [valor_ALBU|CO][hb02|estrato:h0302][PM10|estrato]
+   [valor_INSULINA|h0302:valor_ALBU][valor_VIT_B12|estrato:valor_HCST]
+   [valor_COLEST|valor_INSULINA:valor_PCR]
+   [valor_HB1AC|valor_ALBU:valor_INSULINA]
   nodes:                                 19 
-  arcs:                                  15 
+  arcs:                                  21 
     undirected arcs:                     0 
-    directed arcs:                       15 
-  average markov blanket size:           1.89 
-  average neighbourhood size:            1.58 
-  average branching factor:              0.79 
+    directed arcs:                       21 
+  average markov blanket size:           2.84 
+  average neighbourhood size:            2.21 
+  average branching factor:              1.11 
 
   generation algorithm:                  Empty </code></pre>
 </div>
