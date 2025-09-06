@@ -1,0 +1,128 @@
+---
+title: "Redes Bayesianas para el transporte"
+author:
+  - name: "Jessica Dong"
+  - name: "Ebony Valadez"
+  - name: "Emiliano Guzmán"
+  - name: "Rafael Gutiérrez "
+date: today
+lang: es
+abstract: |
+ Este proyecto explora la relación entre la exposición a contaminantes ambientales y la salud de la población mexicana. Utilizando datos de la Encuesta Nacional de Salud y Nutrición (ENSANUT) 2022 y datos de calidad del aire de SEMARNAT, se construye y evalúa un modelo de Redes Bayesianas Graussiana (GBN). La estructura de la red se propone con base en la opinión de expertos, validando su desempeño individual con métricas como el BIC y el AIC. El modelo resultante se utiliza para responder a preguntas de investigación sobre cómo la exposición a contaminantes impacta en biomarcadores específicos. Los hallazgos buscan contribuir a una mejor comprensión de los factores que influyen en la salud pública y a informar estrategias para mitigar los efectos de la contaminación atmosférica.
+keywords: ["redes bayesianas gaussianas", "bnlearn", "contaminación del aire", "codificación"]
+
+execute:
+  echo: false       
+  warning: false
+  message: false
+
+crossref:
+  fig-prefix: "Figura"
+  tbl-prefix: "Tabla"
+  eq-prefix: "Ecuación"
+
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    code-fold: show
+    code-tools: true
+    df-print: paged
+    math: mathjax
+  pdf:
+    documentclass: article
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    geometry: "margin=1in"
+    fig-cap-location: bottom
+    tbl-cap-location: top
+---
+
+# Título
+
+## Introducción
+
+Este proyecto de investigación se enfoca en analizar la **relación entre los contaminantes atmosféricos y sus efectos en la salud humana en México**. A través de este artículo se busca identificar y cuantificar la influencia de los factores ambientales sobre biomarcadores biológicos específicos en la población mexicana.
+
+Para ello, se integraron conjuntos de datos de fuentes gubernamentales confiables. Los datos de la **Encuesta Nacional de Salud y Nutrición (ENSANUT) 2022** proporcionan información socio-demográfica y biológica detallada sobre la muestra de estudio. Esta información se complementa con datos de **calidad del aire actualizados de la SEMARNAT**.
+
+La metodología con la que se aborda este artículo consiste en la construcción de **Redes Bayesianas Gaussianas (GBN)**, con la que será posible representar y analizar las complejas dependencias entre las variables. Con la colaboración de expertos en medicina y química, se validará y construirá al menos tres estructuras de red distintas. Para comparar su rendimiento, se evaluará su calidad con métricas como el BIC y el AIC. Finalmente, se utilizará el modelo más robusto para responder a preguntas clave sobre la salud pública, lo que podría informar el desarrollo de futuras políticas de salud y medio ambiente.
+
+## Metodología
+
+### Construcción de la base de datos
+
+Se crearon dos dataframes a partir de los datos originales: **demográfico**, con información socio-demográfica como folio, estrato, región y entidad/municipio, y **sangre**, con folio y distintos biomarcadores. Estos se unen mediante la columna de folio que tienen en común, combinando datos demográficos y de biomarcadores de sangre por persona. Después, se filtraró el archivo de calidad del aire para limpiar y estandarizan los nombres de entidad y municipio en para que coincidan con el formato de los datos ambientales. Finalmente, se unieron los datos de los biomarcadores y la calidad del aire por entidad y municipio, obteniendo el dataframe final, que integra información socio-demográfica, biomarcadores sanguíneos y calidad del aire lista para el análisis.
+
+Se realizó la limpieza de los datos mediante la transformación de variables a formato numérico y la corrección de valores atípicos. Debido a que más de 15 variables importantes para las estructuras DAG presentaban datos faltantes, y muchas tenían más del 50% de información incompleta, no era posible eliminar observaciones. Por ello, se optó por la **imputación con la mediana**, de manera que se pudieran utilizar para el análisis posterior.
+
+### Redes bayesianas propuestas
+
+Se consultaron a tres expertos en áreas de la salud y bioquímica, quienes contribuyeron al proyecto proporcionando su conocimiento especializado para proponer estructuras DAG que representaran las posibles relaciones de dependencia entre las variables. Gracias a estas entrevistas, se obtuvieron al menos tres redes diferentes, reflejando distintas perspectivas sobre las interacciones entre los indicadores de salud, factores demográficos y ambientales. Las variables que se utilizaron para plantear los modelos DAG son las siguientes:
+
+```         
+desc_ent1           = entidad
+desc_mun1           = municipio
+h0302               = sexo
+h0303               = edad
+estrato             = estrato
+region              = region
+hb02                = hemoglobina
+valor_AC_URICO      = acido_urico
+valor_ALBU          = albumina
+valor_COL_HDL       = col_hdl
+valor_COL_LDL       = colo_ldl
+valor_COLEST        = colesterol_total
+valor_CREAT         = creatinina
+valor_GLU_SUERO     = glucosa
+valor_INSULINA      = insulina
+valor_PCR           = proteina_cr
+valor_TRIG          = trigliceridos
+valor_HB1AC         = hemoglobina_glucos
+valor_FERRITINA     = ferritina
+valor_FOL           = folato
+valor_HCST          = homocistenia
+valor_STFR_FEB23    = receptor_transferrr
+valor_VIT_B12       = vit_b12
+valor_VIT_D         = vit_d
+SO_2                = SO_2
+CO                  = CO
+NOx                 = NOx
+COV                 = COV
+PM_010              = PM_010
+PM_2_5              = PM_2_5
+NH_3                = NH_3
+```
+
+#### DAG 1:  Propuesta por el nutriólogo y especialista en ciencias médicas Alberto Bricio.
+
+En esta estructura las variables demográficas, como el sexo y la edad, influyen directamente en los biomarcadores. Por ejemplo, la hemoglobina es una función del sexo y el PM10 se relaciona con la densidad de población, representada por el estrato social. Se postula que la exposición a contaminantes atmosféricos como el SO2 y el CO influye directamente en la salud. El SO2 se asocia con el nivel de proteína C reactiva y homocisteína, mientras que el CO impacta en los niveles de albúmina. Finalmente, estas interacciones se reflejan en la salud metabólica y nutricional: la albúmina y la insulina influyen en la hemoglobina glicosilada y el colesterol total, mientras que la edad y la región se relacionan con los niveles de vitamina D.
+
+#### DAG 2: Propuesta por el biomédico y PhD candidate en human genetics Asbiel Garibaldi.
+
+En la segunda estructura se explora la relación entre la exposición a contaminantes ambientales, el estilo de vida, los factores socio-demográficos y los biomarcadores de salud. Se propone que la contaminación del aire por partículas finas (PM2.5​ y PM10​) causa un perfil inflamatorio en el cuerpo, lo que se refleja en niveles elevados de proteína C reactiva. A largo plazo, esta inflamación crónica podría influir en los niveles de hemoglobina glicosilada.
+
+Además, se plantea que la exposición a óxidos de nitrógeno (NOx​) y dióxido de azufre (SO2​) genera estrés oxidativo que eleva la homocisteína y exacerba los procesos inflamatorios. Por otro lado, la exposición al monóxido de carbono (CO) afecta la oxigenación, lo que se refleja en una disminución de la hemoglobina y en la función renal, evaluada con la creatinina.
+
+En cuanto a los factores de estilo de vida, la dieta juega un papel crucial. Se propone que el consumo de carne roja está asociado con niveles elevados de ácido úrico, mientras que una dieta alta en grasas se correlaciona con el colesterol y los triglicéridos. Un consumo bajo de frutas y verduras se refleja en niveles deficientes de folato, vitamina B12 y vitamina D. La edad y el sexo también se consideran factores de riesgo importantes para el desarrollo de enfermedades: la edad se relaciona directamente con los niveles de glucosa e insulina, mientras que el sexo influye en la ferritina y la hemoglobina. Finalmente, se postula que vivir en zonas urbanas (representado por el estrato social) influye directamente en el perfil metabólico e inflamatorio debido a una mayor exposición a la contaminación.
+
+#### DAG 3: Propuesta por el médico geriatra Jesús Francisco Gutiérrez Suárez.
+
+Este modelo establece que las variables demográficas, como el sexo y la edad, son los nodos principales que influyen en los perfiles metabólicos, afectando directamente los niveles de colesterol LDL, colesterol total, triglicéridos y glucosa.
+
+El modelo propone que la **exposición a contaminantes del aire**, como el monóxido de carbono (CO), el dióxido de azufre (SO2​) y el amoníaco (NH3​), está determinada por el estrato socioeconómico y la región. La **hemoglobina** es un biomarcador clave en esta estructura, ya que se encuentra en el centro de las dependencias, siendo influenciada por una combinación de factores ambientales (CO, NOx​), demográficos (sexo, edad, región) y nutricionales (ferritina, folato, vitamina B12). Finalmente, los indicadores de salud a largo plazo, como la **hemoglobina glicosilada**, dependen de las interacciones entre el sexo, la edad y los niveles de hemoglobina y glucosa.
+
+En resumen, los tres modelos de DAGs coinciden en estructurar las variables sociodemográficas como puntos de partida, de modo que sexo, edad y región siempre aparecen como nodos iniciales, y en todos los casos se observa que variables metabólicas como glucosa, colesterol total, hemoglobina o insulina son consideradas desenlaces intermedios o finales. Sin embargo, difieren en cómo se asignan los papeles de mediación: por ejemplo, en un modelo *estrato* funciona como nexo entre municipio y hemoglobina, reflejando un interés en capturar determinantes sociales de la salud; mientras que en otro se enfatiza la ruta bioquímica al ligar proteína C reactiva con glucosa y colesterol, sugiriendo una perspectiva más biomédica que prioriza la inflamación como factor central. De forma similar, un modelo coloca a la albúmina como variable puente entre CO y hemoglobina glucosilada, mientras que en otro este rol lo asume la insulina, mostrando dos formas distintas de concebir la relación entre metabolismo energético y marcadores de función hepática. Estas diferencias probablemente se deben a que cada investigador pondera de manera distinta la evidencia previa: quienes priorizan variables sociales construyen DAGs más jerárquicos con capas de contexto (municipio, estrato), mientras que quienes priorizan la fisiología molecular trazan rutas más directas entre biomarcadores. En suma, los puntos en común muestran un consenso en las variables clave, pero las divergencias reflejan enfoques disciplinarios y prioridades teóricas distintas.
+
+#### Ajuste de cada modelo a una GBN y métricas BIC y AIC 
+
+A partir de cada DAG, se procedió a realizar un ajuste cada uno a una Red Bayesiana Gaussiana utilizando la librería `bnlearn` de R. Sin embargo, en este lenguaje las GBN solo pueden ajustarse con variables continuas; no es posible incluir directamente variables discretas como sexo, estrato o región. Por ello, los intentos de ajustar una GBN con estas variables fallaron, y los criterios de información Bayesiano y de Akaike (BIC y AIC) solo funcionan para nodos continuos. Estas redes están diseñadas para trabajar con variables que siguen una distribución gaussiana, es decir, continuas. Los modelos DAG que se propusieron tienen condicionales gaussianas mixtas, las CG-BN (condicionales gaussianas mixtas) en `bnlearn` no son soportadas para ajuste automático con variables discretas, al menos no usar paquetes avanzados.
+
+Ante lo anterior, se convirtieron las variables discretas en un factor, aunque esto no cambia el hecho de que su naturaleza es categórica. Ya que los modelos GBN puros asumen que todas las relaciones entre las variables son lineales y pueden ser representadas por regresiones lineales, lo que no es posible con variables discretas o categóricas, probar esta técnica tampoco produjo buenos resultados. Después de una investigación más exhaustiva, se encontró que los intentos de ajustar las estructuras DAG propuestas directamente como una GBN pura fallarán en R porque incluyen variables categóricas, y los criterios de información BIC o AIC no son compatibles con nodos discretos, lo que hace necesario explorar enfoques más avanzados o alternativos para el análisis.
+
+### ¿Cómo manejar variables discretas en una Red Bayesiana?
+
+Para incluir variables discretas y continuas en la misma red bayesiana, es necesario utilizar un tipo de modelo diferente conocido como Red Bayesiana Híbrida. Las opciones prácticas consisten en usar únicamente las variables continuas para ajustar la GBN, ignorando las discretas como sexo o estrato, o bien convertir todas las variables continuas a rangos o categorías y trabajar con una red bayesiana completamente discreta, evaluando el modelo con criterios como BIC o AIC. Alternativamente, para combinar ambos tipos de variables sin discretizar, se puede emplear una Red Bayesiana Condicionalmente Gaussiana (CG-BN) o utilizar paquetes más avanzados en otros entornos, como Python, que soporten mezclas de variables continuas y discretas.
