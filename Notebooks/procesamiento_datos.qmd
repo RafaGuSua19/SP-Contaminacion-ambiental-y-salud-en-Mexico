@@ -12,10 +12,9 @@ library(dplyr)
 ```
 
 ```{r}
-data1 = read.csv("../data/ensanut2022_muestras.csv", sep = ";", stringsAsFactors = TRUE)
-data2 = read.csv("../data/ensanut2022_socdem.csv", sep = ";", stringsAsFactors = TRUE)
+data1 = read.csv("/Users/jessica/project_R/articulo2/data/ensanut2022_muestras.csv", sep = ";", stringsAsFactors = TRUE)
+data2 = read.csv("/Users/jessica/project_R/articulo2/data/ensanut2022_socdem.csv", sep = ";", stringsAsFactors = TRUE)
 ```
-
 
 ```{r}
 head(data1)
@@ -39,16 +38,12 @@ sangre <- data1 %>%
 head(sangre)
 ```
 
-
 ```{r}
 # Unir las tablas
 demo_sangre <- inner_join(demografico, sangre, by = "FOLIO_I")
 
 head(demo_sangre)
 ```
-
-
-
 
 ```{r}
 data3 = read.csv("../data/calidad_aire_2025.csv")
@@ -70,11 +65,9 @@ demo_sangre$desc_mun1 <- sub("^\\d+\\s+", "", demo_sangre$desc_mun1)
 demo_sangre$desc_mun1 <- str_to_title(tolower(demo_sangre$desc_mun1))
 ```
 
-
 ```{r}
 head(demo_sangre)
 ```
-
 
 ```{r}
 # Quitar el código inicial
@@ -91,7 +84,6 @@ head(demo_sangre)
 ```{r}
 # write.csv(demo_sangre, "../data/data_final.csv", row.names = FALSE)
 ```
-
 
 ```{r}
 df_merged <- merge(
@@ -110,6 +102,7 @@ head(df_merged)
 ```{r}
 names(df_merged)
 ```
+
 ```{r}
 df_merged <- df_merged %>% 
   select(-entidad1, -municipio1)
@@ -122,4 +115,3 @@ head(df_merged)
 ```{r}
 write.csv(df_merged, "../data/data_final.csv", row.names = FALSE)
 ```
-
