@@ -1,0 +1,113 @@
+---
+title: "dags_metricas"
+format: html
+editor: visual
+---
+
+# DAG's con variables discretas y continuas
+
+```{r}
+data = read.csv("/Users/jessica/project_R/articulo2/data/data_final5.csv", stringsAsFactors = TRUE)
+head(data)
+```
+
+```{r}
+library(tidyverse)
+library(bnlearn)
+```
+
+primer modelo de DAG
+
+```{r}
+propuesta1 <- "[sexo][edad][region][SO_2][homocistenia][entidad|region][proteina_cr|SO_2:homocistenia][vit_d|edad:region][CO|entidad][municipio|entidad][glucosa|proteina_cr][estrato|municipio][albumina|CO][hemoglobina|estrato:sexo][PM_010|estrato][insulina|sexo:albumina][vit_b12|estrato:homocistenia][colesterol_total|insulina:proteina_cr][hemoglobina_glucosilada|albumina:insulina]"
+
+```
+
+```{r}
+dag1 <- model2network(propuesta1)
+```
+
+```{r}
+library(Rgraphviz)
+graphviz.plot(dag1, shape = "ellipse")
+```
+
+```{r}
+# Convierte todas las variables continuas a numeric y las discretas a factor antes de ajustar la gbn
+# Variables discretas (factor)
+discretas <- c("entidad", "municipio", "sexo", "estrato", "region")
+for (v in discretas) {
+  if (v %in% names(data)) data[[v]] <- as.factor(data[[v]])
+}
+
+# Variables continuas (numeric/double)
+continuas <- setdiff(names(data), discretas)
+for (v in continuas) {
+  if (v %in% names(data)) data[[v]] <- as.numeric(data[[v]])
+}
+```
+
+```{r}
+# Si hay variables extra en el dataframe, selecciona solo las que están en la DAG:
+data_dag1 <- data[, nodes(dag1)]
+
+```
+
+```{r}
+#red gaussiana dag1 
+crop_fit1 = bn.fit(dag1, data = data_dag1)
+
+```
+
+```{r}
+#bic 1
+score(dag1, data = data_dag1, type = "bic-g")
+```
+
+Error in check.score(type, data = data) :
+score 'bic-g' may only be used with continuous data.
+
+Una GBN pura no puede manejar variables discretas. Su nombre lo indica: está diseñada para trabajar con variables con una distribución gaussiana: variables continuas.
+
+```{r}
+# aic 1
+score(dag, data = data, type = "aic-g")
+```
+
+```{r}
+propuesta2 <- "[sexo][edad][region][estrato|region][ferritina|sexo][glucosa|edad][insulina|edad][CO|estrato][NOx|estrato][PM_010|estrato][PM_2_5|estrato][SO_2|estrato][acido_urico|estrato:edad][colesterol_total|estrato:edad][folato|estrato][trigliceridos|estrato:edad][vit_b12|estrato][vit_d|estrato:edad][hemoglobina|CO:sexo][creatinina|CO:edad][homocistenia|NOx:SO_2][proteina_cr|PM_010:PM_2_5:homocistenia][hemoglobina_glucosilada|glucosa:insulina:proteina_cr]"
+
+```
+
+```{r}
+dag2 <- model2network(propuesta2)
+```
+
+```{r}
+library(Rgraphviz)
+graphviz.plot(dag2, shape = "ellipse")
+```
+
+```{r}
+#red gauss dag2
+crop_fit2 = bn.fit(dag2, data = data)
+
+```
+
+```{r}
+propuesta3 <- "[sexo][edad][NOx][region][ferritina][folato][vit_b12][entidad|region][colo_ldl|sexo][colesterol_total|sexo:edad][glucosa|edad][trigliceridos|edad][municipio|entidad][insulina|glucosa][estrato|municipio][CO|estrato][NH_3|estrato][SO_2|estrato][hemoglobina|CO:sexo:edad:NOx:region:ferritina:folato:vit_b12][hemoglobina_glucosilada|sexo:edad:hemoglobina:glucosa][receptor_transferrina|hemoglobina:region]"
+```
+
+```{r}
+dag3 <- model2network(propuesta3)
+```
+
+```{r}
+library(Rgraphviz)
+graphviz.plot(dag3, shape = "ellipse")
+```
+
+```{r}
+crop_fit3 = bn.fit(dag3, data = data)
+
+```
