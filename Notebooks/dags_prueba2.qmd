@@ -1,0 +1,155 @@
+---
+title: "Dags Prueba Final v.2"
+format: html
+editor: visual
+---
+
+# DAG's con variables discretas y continuas
+
+```{r}
+library(tidyverse)
+library(bnlearn)
+```
+
+```{r}
+data = read_csv("../Notebooks/data_final5.csv")
+head(data)
+```
+```{r}
+# Convierte todas las variables continuas a numeric y las discretas a factor antes de ajustar la gbn
+# Variables discretas (factor)
+discretas <- c("entidad", "municipio", "sexo", "estrato", "region")
+for (v in discretas) {
+  if (v %in% names(data)) data[[v]] <- as.factor(data[[v]])
+}
+
+# Variables continuas (numeric/double)
+continuas <- setdiff(names(data), discretas)
+for (v in continuas) {
+  if (v %in% names(data)) data[[v]] <- as.numeric(data[[v]])
+}
+```
+
+```{r}
+data$municipio <- as.numeric(data$municipio)
+data$edad <- as.numeric(data$edad)
+data$entidad <- as.numeric(data$entidad)
+```
+
+```{r}
+head(data)
+```
+
+primer modelo de DAG
+
+```{r}
+propuesta1 <- "[edad][SO_2][homocistenia][entidad][proteina_cr|SO_2:homocistenia][vit_d|edad][CO|entidad][municipio|entidad][glucosa|proteina_cr][albumina|CO][insulina|albumina][vit_b12|homocistenia][colesterol_total|insulina:proteina_cr][hemoglobina_glucosilada|albumina:insulina]"
+
+```
+
+```{r}
+dag1 <- model2network(propuesta1)
+```
+
+```{r}
+library(Rgraphviz)
+graphviz.plot(dag1, shape = "ellipse")
+```
+
+
+```{r}
+# Si hay variables extra en el dataframe, selecciona solo las que están en la DAG:
+data_dag1 <- data[, nodes(dag1)]
+
+```
+
+```{r}
+#red gaussiana dag1 
+crop_fit1 = bn.fit(dag1, data = data_dag1)
+
+```
+
+```{r}
+#bic 1
+score(dag1, data = data_dag1, type = "bic-g")
+```
+
+
+```{r}
+# aic 1
+score(dag1, data = data_dag1, type = "aic-g")
+```
+
+```{r}
+propuesta2 <- "[edad][municipio][glucosa|edad][insulina|edad][CO|municipio][NOx|municipio][PM_010|municipio][PM_2_5|municipio][SO_2|municipio][acido_urico|municipio:edad][colesterol_total|municipio:edad][folato|municipio][trigliceridos|municipio:edad][vit_b12|municipio][vit_d|municipio:edad][hemoglobina|CO][creatinina|CO:edad][homocistenia|NOx:SO_2][proteina_cr|PM_010:PM_2_5:homocistenia][hemoglobina_glucosilada|glucosa:insulina:proteina_cr]"
+
+```
+
+```{r}
+dag2 <- model2network(propuesta2)
+```
+
+```{r}
+graphviz.plot(dag2, shape = "ellipse")
+```
+
+
+
+```{r}
+# Si hay variables extra en el dataframe, selecciona solo las que están en la DAG:
+data_dag2 <- data[, nodes(dag2)]
+
+```
+
+```{r}
+#red gaussiana dag2 
+crop_fit2 = bn.fit(dag2, data = data_dag2)
+
+```
+
+```{r}
+#bic 2
+score(dag2, data = data_dag2, type = "bic-g")
+```
+
+
+```{r}
+# aic 2
+score(dag2, data = data_dag2, type = "aic-g")
+```
+
+
+```{r}
+propuesta3 <- "[edad][NOx][ferritina][folato][vit_b12][entidad][colesterol_total|edad][glucosa|edad][trigliceridos|edad][municipio|entidad][insulina|glucosa][CO][hemoglobina|CO:edad:NOx:ferritina:folato:vit_b12][hemoglobina_glucosilada|edad:hemoglobina:glucosa][receptor_transferrina|hemoglobina]"
+```
+
+```{r}
+dag3 <- model2network(propuesta3)
+```
+
+```{r}
+graphviz.plot(dag3, shape = "ellipse")
+```
+```{r}
+# Si hay variables extra en el dataframe, selecciona solo las que están en la DAG:
+data_dag3 <- data[, nodes(dag3)]
+
+```
+
+```{r}
+#red gaussiana dag3 
+crop_fit3 = bn.fit(dag3, data = data_dag3)
+
+```
+
+
+```{r}
+#bic 3
+score(dag3, data = data_dag3, type = "bic-g")
+```
+
+
+```{r}
+# aic 3
+score(dag3, data = data_dag3, type = "aic-g")
+```
