@@ -31,6 +31,7 @@ data_imp <- data
 ```
 
 ```{r}
+
 # Rellenar con la mediana 
 for (var in vars_missing) {
   mediana <- median(data_imp[[var]], na.rm = TRUE)
@@ -50,4 +51,89 @@ names(data_imp)[names(data_imp) == "Triglycerides"] <- "trigliceridos"
 
 ```{r}
 write.csv(data_imp, "/Users/jessica/project_R/articulo2/data/data_final3.csv", row.names = FALSE)
+```
+
+```{r}
+# Imprimir los nombres de las columnas
+names(data_imp)
+```
+
+```{r}
+data2 = read.csv("/Users/jessica/project_R/articulo2/data_final4.csv", stringsAsFactors = FALSE)
+```
+
+```{r}
+#revisar el % de datos faltantes de cada variable
+colSums(is.na(data2)) / nrow(data2)
+```
+
+```{r}
+library(dplyr)
+library(stringr)
+
+data2 <- data2 |>
+  mutate(across(matches("hemoglobina|acido_urico|albumina|creatinina|insulina|proteina_cr|hemoglobina_glucosilada|ferritina|folato|homocistenia|vit_d|vit_b12|receptor_transferrina|glucosa|colo_ldl|ol_hdh"),
+                ~ as.numeric(str_replace(., ",", "\\."))))
+
+```
+
+```{r}
+str(data2)
+
+```
+
+```{r}
+#revisar el % de datos faltantes de cada variable
+colSums(is.na(data2)) / nrow(data2)
+```
+
+```{r}
+# Lista de variables con faltantes que quieres imputar
+vars_missing <- c("col_hdh", "colesterol_total", "Triglycerides",
+                  "SO_2", "CO", "NOx", "COV", "PM_010", "PM_2_5", "NH_3")
+
+vars_missing2 <- c(
+  "hemoglobina",
+  "acido_urico",
+  "albumina",
+  "creatinina",
+  "glucosa",
+  "insulina",
+  "proteina_cr",
+  "hemoglobina_glucosilada",
+  "ferritina",
+  "folato",
+  "homocistenia",
+  "receptor_transferrina",
+  "vit_b12",
+  "vit_d"
+)
+```
+
+```{r}
+data_imp2 <- data2
+# Rellenar con la mediana 
+for (var in vars_missing2) {
+  mediana <- median(data_imp2[[var]], na.rm = TRUE)
+  data_imp2[[var]][is.na(data_imp2[[var]])] <- mediana
+}
+
+# Revisar que ya no haya valores faltantes en esas columnas
+colSums(is.na(data_imp2[ , vars_missing2]))
+```
+
+```{r}
+str(data_imp2)
+```
+
+```{r}
+write.csv(data_imp2, "/Users/jessica/project_R/articulo2/data/data_final5.csv", row.names = FALSE)
+```
+
+```{r}
+data3 = read.csv("/Users/jessica/project_R/articulo2/data/data_final.csv", stringsAsFactors = TRUE)
+```
+
+```{r}
+str(data3)
 ```
