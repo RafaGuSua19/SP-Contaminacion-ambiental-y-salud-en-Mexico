@@ -1,0 +1,53 @@
+---
+title: "limpieza_datos"
+format: html
+editor: visual
+---
+
+```{r}
+data = read.csv("/Users/jessica/project_R/articulo2/data_final2.csv", stringsAsFactors = TRUE)
+```
+
+```{r}
+head(data)
+```
+
+```{r}
+#revisar el % de datos faltantes de cada variable
+colSums(is.na(data)) / nrow(data)
+
+```
+
+```{r}
+# Lista de variables con faltantes que quieres imputar
+vars_missing <- c("col_hdh", "colesterol_total", "Triglycerides",
+                  "SO_2", "CO", "NOx", "COV", "PM_010", "PM_2_5", "NH_3")
+```
+
+```{r}
+# Hacer una copia del dataset original
+data_imp <- data
+
+```
+
+```{r}
+# Rellenar con la mediana 
+for (var in vars_missing) {
+  mediana <- median(data_imp[[var]], na.rm = TRUE)
+  data_imp[[var]][is.na(data_imp[[var]])] <- mediana
+}
+
+# Revisar que ya no haya valores faltantes en esas columnas
+colSums(is.na(data_imp[ , vars_missing]))
+
+```
+
+```{r}
+# renombrar trigliceridos
+names(data_imp)[names(data_imp) == "Triglycerides"] <- "trigliceridos"
+
+```
+
+```{r}
+write.csv(data_imp, "/Users/jessica/project_R/articulo2/data/data_final3.csv", row.names = FALSE)
+```
