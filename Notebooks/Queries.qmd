@@ -1,0 +1,139 @@
+---
+title: "intentooo"
+format: html
+editor: visual
+---
+
+```{r}
+library(bnlearn)
+library(tidyverse)
+```
+
+```{r}
+data = read_csv("~/Desktop/Situación Problema 2/data_final5.csv")
+```
+
+## Selección y limpieza de variables para el DAG
+
+```{r}
+# Nombres de variables del DAG
+variables_dag <- c("municipio", "edad", "hemoglobina", "acido_urico",
+  "colesterol_total", "creatinina", "glucosa", "insulina", "proteina_cr", 
+  "trigliceridos", "hemoglobina_glucosilada", "folato", "homocistenia", 
+  "vit_b12", "vit_d", "SO_2", "CO", "NOx", "PM_010", "PM_2_5"
+)
+
+# Filtra solo las columnas necesarias
+data_dag <- data[, variables_dag]
+
+# Variables discretas (factor)
+discretas <- c("municipio")
+for (v in discretas) {
+ if (v %in% names(data)) data[[v]] <- as.factor(data_dag[[v]])
+}
+
+# Variables categóricas a numéricas
+data_dag$municipio <- as.numeric(data$municipio)
+
+head(data_dag)
+```
+
+## Definición de la estructura del DAG (la red)
+
+```{r}
+propuesta <- "[edad][municipio][glucosa|edad][insulina|edad][CO|municipio][NOx|municipio][PM_010|municipio][PM_2_5|municipio][SO_2|municipio][acido_urico|municipio:edad][colesterol_total|municipio:edad][folato|municipio][trigliceridos|municipio:edad][vit_b12|municipio][vit_d|municipio:edad][hemoglobina|CO][creatinina|CO:edad][homocistenia|NOx:SO_2][proteina_cr|PM_010:PM_2_5:homocistenia][hemoglobina_glucosilada|glucosa:insulina:proteina_cr]"
+
+dag <- model2network(propuesta)
+nodes(dag)
+```
+
+## Visualiza la estructura del DAG
+
+```{r}
+graphviz.plot(dag, shape = "ellipse")
+```
+
+
+```{r}
+fit_m <- bn.fit(dag, data_dag)
+```
+
+## Probabilidad de proteina CR alta con contaminación elevada
+
+```{r}
+# Calcula umbrales (puedes cambiar percentil según tu contexto)
+p75_prot <- quantile(data_dag$proteina_cr, 0.75, na.rm=TRUE)
+p75_pm25 <- quantile(data_dag$PM_2_5, 0.75, na.rm=TRUE)
+p75_pm010 <- quantile(data_dag$PM_010, 0.75, na.rm=TRUE)
+
+# Query: P(proteina_cr alta | PM_2_5 y PM_010 altos)
+prob_prot_alta_contam <- cpquery(fit_m,
+  event = (proteina_cr > p75_prot),
+  evidence = (PM_2_5 > p75_pm25 & PM_010 > p75_pm010),
+  method = "ls",    # logic sampling
+  n = 10000         # número de simulaciones
+)
+cat("Probabilidad de proteina CR alta con contaminación elevada:", prob_prot_alta_contam, "\n")
+
+```
+
+
+## Probabilidad de glucosa elevada por municipio
+
+```{r}
+p75_glucosa <- quantile(data$glucosa, 0.75, na.rm=TRUE)
+
+# Municipios presentes en tus datos (ajusta si hay más/menos de 1 a 16)
+municipios <- sort(unique(data_dag$municipio))
+
+# Vector para guardar resultados
+probs <- numeric(length(municipios))
+
+# Loop para calcular la probabilidad en cada municipio
+for (i in seq_along(municipios)) {
+  m <- municipios[i]
+  # Usa un rango para que funcione con la GBN
+  probs[i] <- cpquery(
+    fit_m,
+    event    = (glucosa > p75_glucosa),
+    evidence = (municipio > (m - 0.5) & municipio < (m + 0.5)),
+    method   = "ls",
+    n        = 50000  
+  )
+}
+
+# Tabla de resultados
+resultados <- data.frame(
+  municipio = municipios,
+  probabilidad_glucosa_alta = probs
+)
+
+print(resultados)
+```
+
+
+## Probabilidad de colesterol total alto con SO_2 alto y edad > 65
+
+```{r}
+p75_col <- quantile(data$colesterol_total, 0.75, na.rm=TRUE)
+p75_so2 <- quantile(data$SO_2, 0.75, na.rm=TRUE)
+
+# Ejemplo: Para edad > 65
+prob_col_so2_age <- cpquery(fit_m,
+  event = (colesterol_total > p75_col),
+  evidence = (SO_2 > p75_so2 & edad > 65),
+  method = "ls",
+  n = 10000
+)
+cat("Probabilidad de colesterol total alto con SO_2 alto y edad > 65:", prob_col_so2_age, "\n")
+
+```
+
+
+
+
+
+
+
+
+
