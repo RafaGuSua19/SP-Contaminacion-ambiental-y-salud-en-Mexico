@@ -194,10 +194,10 @@ Con esta convención, valores **más altos** indican mejor ajuste penalizado (eq
 ### 4.2. Resultado principal  
 El ajuste no paramétrico obtuvo:
 
-| Modelo                         | \(\text{Score}_{\text{BIC}}\) |
+| Modelo                         | \(BIC\) |
 |--------------------------------|-------------------------------|
-| DAG con modelos no paramétricos (GAM) | \(-5{,}133{,}520\)            |
-| DAG con modelos paramétricos (lineales) | \(-5{,}176{,}757\)            |
+| DAG con modelos no paramétricos (GAM) | \(-5,133,520\)            |
+| DAG con modelos paramétricos (lineales) | \(-5,176,757\)            |
 
 Por tanto, **el BIC no mejoró** al introducir suavizadores.
 
