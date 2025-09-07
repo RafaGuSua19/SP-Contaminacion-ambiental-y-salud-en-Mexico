@@ -221,12 +221,8 @@ Las tres estructuras DAG ajustadas fueron evaluadas con los criterios de informa
 
 
 $$
-\mathbb{P}\!\left(\text{proteina_cr}>0.001 \;\middle|\; PM_{2.5}<=155\ \mu\mathrm{g/m}^3\right) = 0.8228418
+\mathbb{P}\!\left(\text{proteina\_cr} > 0.001 \;\middle|\; PM_{2.5} \leq 155 \,\mu\text{g}/\text{m}^3\right)
 $$
-
-```{r}
-cpquery(fit_m, event = (proteina_cr > 0.001), evidence = ( PM_2_5 <= 155), n = 10^6)
-```
 
 ---
 
