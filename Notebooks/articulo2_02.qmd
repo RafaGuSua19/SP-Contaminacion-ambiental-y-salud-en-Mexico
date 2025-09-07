@@ -163,3 +163,24 @@ Este modelo refleja relaciones plausibles desde un punto de vista epidemiológic
 - Variables como **hemoglobina glucosilada** y **proteína C-reactiva** aparecen al final de la red, recibiendo influencias de varios factores metabólicos y ambientales, lo que sugiere su papel como posibles variables de resultado o integración de riesgos.  
 
 En conjunto, la estructura del Modelo 2 muestra cómo las características demográficas (edad) y contextuales (municipio) actúan como determinantes principales sobre los biomarcadores de salud, lo que refuerza su pertinencia como modelo seleccionado.
+
+### Inclusión de variables categóricas en redes bayesianas mixtas
+
+Uno de los principales retos al construir redes bayesianas con datos reales es la combinación de variables de distinta naturaleza: algunas son continuas (por ejemplo, medidas biométricas), mientras que otras son categóricas (como sexo, región, etc.).  
+Una solución sencilla y frecuentemente utilizada consiste en **discretizar las variables continuas**, es decir, agrupar los valores numéricos en categorías (bajo, medio, alto, etc.). Esta estrategia facilita el uso de modelos bayesianos discretos, pero implica necesariamente una pérdida de información y puede reducir la precisión de los resultados.
+
+Para evitar la discretización, se han desarrollado modelos capaces de manejar datos mixtos. El más conocido es el **modelo condicional gaussiano (CLG)**, que permite que una red bayesiana tenga nodos continuos y discretos a la vez. Sin embargo, el CLG requiere una restricción importante: **los nodos categóricos (discretos) no pueden tener padres continuos**, lo que limita el tipo de relaciones que se pueden representar en la red.
+
+Existen enfoques más avanzados, como los **modelos de mixtura de polinomios** o los **modelos basados en mezclas de distribuciones exponenciales truncadas**. Estas metodologías han evolucionado hacia marcos más generales, como el **modelo de Mixtura de Funciones Base Truncadas**, que amplían la flexibilidad de las redes y permiten representar relaciones complejas entre variables continuas y categóricas, sin las restricciones estructurales de los CLG.
+
+La selección del enfoque para tratar variables categóricas en redes bayesianas depende del equilibrio entre la complejidad técnica, la interpretación de los resultados y la fidelidad con que se desea reflejar las relaciones en los datos originales.
+
+### Estratificación por sexo
+
+Como parte de los requerimientos de la actividad, se nos pidió explorar las diferencias entre hombres y mujeres en los determinantes de salud mediante el análisis de redes bayesianas. Inicialmente, intentamos realizar una estratificación a través de un muestreo poblacional proporcional: calculamos el tamaño de muestra para cada estrato (sexo) con base en la proporción de hombres y mujeres presentes en la población original, siguiendo los procedimientos habituales de muestreo estratificado.
+
+Sin embargo, durante el desarrollo del análisis observamos que, en realidad, no era necesario realizar un muestreo proporcional para comparar los grupos, ya que la base de datos ya contenía suficientes casos de ambos sexos. Por esta razón, optamos simplemente por dividir la base de datos en dos subgrupos: hombres y mujeres, y ajustar una red bayesiana gaussiana (GBN) por separado para cada uno. Esto nos permitió comparar la estructura de relaciones y los parámetros entre ambos sexos de forma directa.
+
+Es importante mencionar que, aunque este enfoque es común para comparar diferencias por sexo cuando se usan modelos que no admiten variables categóricas, aún tengo dudas sobre si esta es la mejor manera de abordar la variable sexo en el contexto de redes bayesianas gaussianas. Por un lado, la estratificación permite detectar diferencias específicas, pero por otro, podría limitar la interpretación conjunta y la potencia estadística del análisis.
+
+
