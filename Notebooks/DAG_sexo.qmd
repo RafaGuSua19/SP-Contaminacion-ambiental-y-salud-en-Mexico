@@ -1,0 +1,106 @@
+---
+title: "Estratificación"
+format: html
+editor: visual
+---
+
+```{r}
+library(bnlearn)
+library(tidyverse)
+library(samplesize)
+library(samplingbook)
+```
+
+```{r}
+data = read_csv("~/Desktop/Situación Problema 2/data_final5.csv")
+```
+
+## Selección y limpieza de variables para el DAG
+
+```{r}
+# Nombres de variables del DAG
+variables_dag <- c("municipio", "edad", "hemoglobina", "acido_urico",
+  "colesterol_total", "creatinina", "glucosa", "insulina", "proteina_cr", 
+  "trigliceridos", "hemoglobina_glucosilada", "folato", "homocistenia", 
+  "vit_b12", "vit_d", "SO_2", "CO", "NOx", "PM_010", "PM_2_5"
+)
+
+# Filtra solo las columnas necesarias
+data_dag <- data[, variables_dag]
+
+# Variables discretas (factor)
+discretas <- c("municipio")
+for (v in discretas) {
+ if (v %in% names(data)) data[[v]] <- as.factor(data_dag[[v]])
+}
+
+# Variables categóricas a numéricas
+data_dag$municipio <- as.numeric(data$municipio)
+
+head(data_dag)
+```
+
+## Definición de la estructura del DAG (la red)
+
+```{r}
+propuesta <- "[edad][municipio][glucosa|edad][insulina|edad][CO|municipio][NOx|municipio][PM_010|municipio][PM_2_5|municipio][SO_2|municipio][acido_urico|municipio:edad][colesterol_total|municipio:edad][folato|municipio][trigliceridos|municipio:edad][vit_b12|municipio][vit_d|municipio:edad][hemoglobina|CO][creatinina|CO:edad][homocistenia|NOx:SO_2][proteina_cr|PM_010:PM_2_5:homocistenia][hemoglobina_glucosilada|glucosa:insulina:proteina_cr]"
+
+dag <- model2network(propuesta)
+nodes(dag)
+```
+
+## Visualiza la estructura del DAG
+
+```{r}
+graphviz.plot(dag, shape = "ellipse")
+```
+
+## Ajusta la red bayesiana gaussiana (GBN) por sexo
+
+```{r}
+hombres <- data_dag[data$sexo == "H" | data$sexo == 1, ]
+mujeres <- data_dag[data$sexo == "M" | data$sexo == 2, ]
+fit_h <- bn.fit(dag, hombres)
+fit_m <- bn.fit(dag, mujeres)
+```
+
+## Calcula el BIC de la estructura en cada grupo
+
+```{r}
+score(dag1, data = mujeres, type = "bic-g")
+```
+
+```{r}
+score(dag1, data = hombres, type = "bic-g")
+```
+
+## Extrae y compara los coeficientes para cada nodo
+
+```{r}
+library(dplyr)
+library(tibble)
+
+# Función para extraer parámetros en tidy format
+extrae_param <- function(fit, grupo) {
+  lapply(names(fit), function(node) {
+    coefs <- fit[[node]]$coefficients
+    sigma <- fit[[node]]$sd
+    tibble(
+      nodo = node,
+      parametro = names(coefs),
+      valor = as.numeric(coefs),
+      sigma = sigma,
+      grupo = grupo
+    )
+  }) %>% bind_rows()
+}
+
+# Aplica la función a ambos modelos
+tab_h <- extrae_param(fit_h, "hombres")
+tab_m <- extrae_param(fit_m, "mujeres")
+
+# Junta en una sola tabla
+tabla_cmp <- full_join(tab_h, tab_m, by = c("nodo", "parametro"), suffix = c("_h", "_m"))
+
+print(tabla_cmp)
+```
