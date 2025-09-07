@@ -1,0 +1,124 @@
+---
+title: "modelo_no_parametrico"
+format: html
+editor: visual
+---
+
+
+```{r}
+library(bnlearn)
+library(tidyverse)
+```
+
+```{r}
+data = read_csv("../Notebooks/data_final5.csv")
+head(data)
+```
+
+## Selección y limpieza de variables para el DAG
+
+```{r}
+# Nombres de variables del DAG
+variables_dag <- c("municipio", "edad", "hemoglobina", "acido_urico",
+  "colesterol_total", "creatinina", "glucosa", "insulina", "proteina_cr", 
+  "trigliceridos", "hemoglobina_glucosilada", "folato", "homocistenia", 
+  "vit_b12", "vit_d", "SO_2", "CO", "NOx", "PM_010", "PM_2_5"
+)
+
+# Filtra solo las columnas necesarias
+data_dag <- data[, variables_dag]
+
+# Variables discretas (factor)
+discretas <- c("municipio")
+for (v in discretas) {
+ if (v %in% names(data)) data[[v]] <- as.factor(data_dag[[v]])
+}
+
+# Variables categóricas a numéricas
+data_dag$municipio <- as.numeric(data$municipio)
+
+head(data_dag)
+```
+
+## Definición de la estructura del DAG (la red)
+
+```{r}
+propuesta <- "[edad][municipio][glucosa|edad][insulina|edad][CO|municipio][NOx|municipio][PM_010|municipio][PM_2_5|municipio][SO_2|municipio][acido_urico|municipio:edad][colesterol_total|municipio:edad][folato|municipio][trigliceridos|municipio:edad][vit_b12|municipio][vit_d|municipio:edad][hemoglobina|CO][creatinina|CO:edad][homocistenia|NOx:SO_2][proteina_cr|PM_010:PM_2_5:homocistenia][hemoglobina_glucosilada|glucosa:insulina:proteina_cr]"
+
+dag <- model2network(propuesta)
+nodes(dag)
+```
+
+## Visualiza la estructura del DAG
+
+```{r}
+graphviz.plot(dag, shape = "ellipse")
+```
+
+```{r}
+fit_m <- bn.fit(dag, data_dag)
+```
+
+```{r}
+library(mgcv)
+library(gratia)
+```
+
+
+```{r}
+
+mod_vit_d          <- gam(vit_d ~ s(edad) + s(municipio), data = data_dag, method = "REML")
+
+```
+
+```{r}
+
+mod_colesterol     <- gam(colesterol_total ~ s(edad) + s(municipio), data = data_dag, method = "REML")
+mod_acido_urico    <- gam(acido_urico ~ s(edad) + s(municipio), data = data_dag, method = "REML")
+mod_trigliceridos  <- gam(trigliceridos ~ s(edad) + s(municipio), data = data_dag, method = "REML")
+
+mod_CO    <- gam(CO    ~ s(municipio), data = data_dag, method = "REML")
+mod_folato<- gam(folato~ s(municipio), data = data_dag, method = "REML")
+mod_NOx   <- gam(NOx   ~ s(municipio), data = data_dag, method = "REML")
+mod_SO2   <- gam(SO_2  ~ s(municipio), data = data_dag, method = "REML")
+mod_PM10  <- gam(PM_010~ s(municipio) + s(SO_2), data = data_dag, method = "REML")
+mod_PM25  <- gam(PM_2_5~ s(municipio), data = data_dag, method = "REML")
+mod_vitb12<- gam(vit_b12 ~ s(municipio), data = data_dag, method = "REML")
+
+mod_glucosa        <- gam(glucosa ~ s(edad), data = data_dag, method = "REML")
+mod_insulina       <- gam(insulina ~ s(edad), data = data_dag, method = "REML")
+
+
+mod_creatinina     <- gam(creatinina ~ s(edad) + s(CO), data = data_dag, method = "REML")
+
+mod_hemoglobina    <- gam(hemoglobina ~ s(CO), data = data_dag, method = "REML")
+
+mod_hba1c          <- gam(hemoglobina_glucosilada ~ s(glucosa) + s(insulina) + s(proteina_cr),
+                          data = data_dag, method = "REML")
+
+mod_homocistenia <- gam(homocistenia ~ s(NOx) + s(SO_2), data = data_dag, method = "REML")
+
+mod_proteina_cr <- gam(
+  proteina_cr ~ s(homocistenia) + s(PM_010) + s(PM_2_5),
+  data = data_dag,
+  method = "REML"
+)
+
+```
+
+
+```{r}
+mod_edad = lm(edad ~ 1, data = data_dag)
+mod_municipio = lm(municipio ~ 1, data = data_dag)
+```
+
+
+```{r}
+-1/2*(BIC(mod_vit_d) + BIC(mod_colesterol) + BIC(mod_acido_urico) + BIC(mod_trigliceridos) +
+           BIC(mod_CO) + BIC(mod_folato) + BIC(mod_NOx) + BIC(mod_SO2) + BIC(mod_PM10) + BIC(mod_PM25) + BIC(mod_vitb12) + 
+        BIC(mod_glucosa) + BIC(mod_insulina) + BIC(mod_creatinina) + BIC(mod_hemoglobina) + BIC(mod_hba1c) + BIC(mod_homocistenia) + BIC(mod_proteina_cr) + BIC(mod_edad) + BIC(mod_municipio))
+
+```
+
+
+
