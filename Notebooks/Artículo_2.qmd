@@ -99,10 +99,12 @@ NH_3                = NH_3
 ### DAG 1:  Propuesta por el nutriólogo y especialista en ciencias médicas Alberto Bricio.
 ![Grafo acíclico dirigido 1](dag_1.png)
 
+
 En esta estructura las variables socio-demográficas, como el sexo y la edad, influyen directamente en los biomarcadores. Por ejemplo, la producción de hemoglobina ocurre en función del sexo y el $PM_{10}$ se relaciona con la densidad de población, representada por el estrato social. Se postula que la exposición a contaminantes atmosféricos como el $SO_2$ y el $CO$ influye directamente en la salud. El $SO_2$ se asocia con el nivel de proteína C reactiva y homocisteína, mientras que el $CO$ impacta en los niveles de albúmina. Finalmente, estas interacciones se reflejan en la salud metabólica y nutricional: la albúmina y la insulina influyen en la hemoglobina glicosilada y el colesterol total, mientras que la edad y la región se relacionan con los niveles de vitamina D.
 
 ### DAG 2: Propuesta por el biomédico y PhD candidate en human genetics Asbiel Garibaldi.
 ![Grafo acíclico dirigido 2](dag_2.png)
+
 
 En la segunda estructura se explora la relación entre la exposición a contaminantes ambientales, el estilo de vida, los factores socio-demográficos y los biomarcadores de salud obtenidos mediante muestras de sangre. Se propone que la contaminación del aire por partículas finas ($PM_{2.5}$​ y $PM_{10}$​) causa un perfil inflamatorio en el cuerpo, lo que se refleja en niveles elevados de proteína C reactiva. A largo plazo, esta inflamación crónica podría influir en los niveles de hemoglobina glicosilada.
 
@@ -112,6 +114,7 @@ En cuanto a los factores de estilo de vida, la dieta juega un papel crucial. Se 
 
 ### DAG 3: Propuesta por el médico geriatra Jesús Francisco Gutiérrez Suárez.
 ![Grafo Acíclico Dirigido 3](dag_3.png)
+
 
 Este modelo establece que las variables demográficas, como el sexo y la edad, son los nodos principales que influyen en los perfiles metabólicos, afectando directamente los niveles de colesterol LDL, colesterol total, triglicéridos y glucosa.
 
@@ -194,18 +197,10 @@ $$
 
 Con esta convención, los valores **más altos** indican mejor ajuste penalizado (equivalente a menores AIC/BIC totales).
 
-### 4.2. Resultado principal  
-El ajuste no paramétrico obtuvo:
-
-| Modelo                         | \(BIC\) |
-|--------------------------------|-------------------------------|
-| DAG con modelos no paramétricos (GAM) | \(-5,133,520\)            |
-| DAG con modelos paramétricos (lineales) | \(-5,176,757\)            |
-
-Por tanto, **el BIC no mejoró** al introducir suavizadores.
-
-
 # Resultados
+
+Para esta etapa se trabajó nuevamente con el **DAG seleccionado**, sin realizar comparaciones adicionales por sexo, ya que estas variables categóricas no forman parte del modelo ajustado.  
+
 
 ## Resultados de BIC y AIC
 
@@ -226,8 +221,8 @@ Las tres estructuras DAG ajustadas fueron evaluadas con los criterios de informa
 $$
 \mathbb{P}\!\left(\text{proteina\_cr} > 0.001 \;\middle|\; PM_{2.5} \leq 155 \,\mu\text{g}/\text{m}^3\right)
 $$
+La probabilidad estimada de que un individuo presente niveles elevados de proteína C reactiva bajo condiciones de PM₂.₅ menores o iguales a 155 μg/m³ es de **82.3%**. Esto indica que, incluso en escenarios donde la concentración de partículas finas se mantiene por debajo de este umbral, existe una alta probabilidad de respuesta inflamatoria medida por proteína C reactiva.
 
----
 
 ### Consulta 2 · Glucosa y contaminante del aire
 **Pregunta.** ¿Cuál es la probabilidad de que una persona tenga **glucosa en ayuno > 126 mg/dL** dado que es **mayor o igual a 50 años** y está expuesta a **NOx >= 40 ppb**?
@@ -237,9 +232,7 @@ $$
 $$
 
 
-
-
----
+En personas de **50 años o más** expuestas a concentraciones de $NOx$ iguales o superiores a 40 ppb, la probabilidad de presentar glucosa en ayuno mayor a 126 mg/dL (umbral diagnóstico de diabetes) es de **17.9%**. Este resultado refleja un riesgo moderado que podría estar asociado a la combinación de edad avanzada y exposición a contaminantes.
 
 ### Consulta 3 · Colesterol total y SO₂
 **Pregunta.** ¿Cuál es la probabilidad de que una persona tenga **colesterol total > 130 mg/dL** dado un nivel de **SO₂ >= 80 ppb**?
@@ -248,7 +241,7 @@ $$
 \mathbb{P}\!\left(\mathrm{colesterol\_total}>130\ \text{mg/dL}\ \middle|\ SO_2>=80\ \text{ppb}\right) = 0.86975
 $$
 
-
+La probabilidad de presentar colesterol total elevado en condiciones de exposición a **SO₂ ≥ 80 ppb** es de **86.9%**. Esto sugiere una fuerte asociación entre altos niveles de dióxido de azufre y alteraciones en el perfil lipídico, lo cual es relevante para el riesgo cardiovascular.
 
 ## Comparación de modelos por sexo
 
@@ -267,18 +260,15 @@ Se observaron diferencias en los parámetros de algunos nodos, como la influenci
 
 Estos resultados sugieren que, para un mismo aumento en la glucosa, el incremento esperado en la hemoglobina glicosilada es mayor en mujeres que en hombres, lo que podría estar relacionado con diferencias fisiológicas.
 
-# Resultados
+## Resultado ajuste no paramétrico  
+El ajuste no paramétrico obtuvo:
 
-Para esta etapa se trabajó nuevamente con el **DAG seleccionado**, sin realizar comparaciones adicionales por sexo, ya que estas variables categóricas no forman parte del modelo ajustado.  
+| Modelo                         | \(BIC\) |
+|--------------------------------|-------------------------------|
+| DAG con modelo no paramétrico  | \(-5,133,520\)            |
+| DAG original seleccionada | \(-5,176,757\)            |
 
-Se aplicaron consultas probabilísticas para evaluar la relación entre biomarcadores y contaminantes ambientales, con los siguientes resultados:
-
-La probabilidad estimada de que un individuo presente niveles elevados de proteína C reactiva bajo condiciones de PM₂.₅ menores o iguales a 155 μg/m³ es de **82.3%**. Esto indica que, incluso en escenarios donde la concentración de partículas finas se mantiene por debajo de este umbral, existe una alta probabilidad de respuesta inflamatoria medida por proteína C reactiva.
-
-En personas de **50 años o más** expuestas a concentraciones de $NOx$ iguales o superiores a 40 ppb, la probabilidad de presentar glucosa en ayuno mayor a 126 mg/dL (umbral diagnóstico de diabetes) es de **17.9%**. Este resultado refleja un riesgo moderado que podría estar asociado a la combinación de edad avanzada y exposición a contaminantes.
-
-
-La probabilidad de presentar colesterol total elevado en condiciones de exposición a **SO₂ ≥ 80 ppb** es de **86.9%**. Esto sugiere una fuerte asociación entre altos niveles de dióxido de azufre y alteraciones en el perfil lipídico, lo cual es relevante para el riesgo cardiovascular.
+Por tanto, **el BIC no mejoró** al introducir suavizadores.
 
 
 # Conclusiones
@@ -293,11 +283,14 @@ Además, se evidenció que incluso bajo **niveles moderados de contaminación**,
 
 De igual forma, la investigación demostró que las **características demográficas, como la edad,** son determinantes clave que interactúan con la exposición ambiental para modular el estado de salud de la población. Esto sugiere que **los grupos vulnerables, como adultos mayores**, pueden estar en mayor riesgo, lo cual debe ser tomado en cuenta en las estrategias de prevención.  
 
-En conclusión, este trabajo muestra que la **integración de datos epidemiológicos y ambientales mediante GBN** constituye una herramienta poderosa para comprender interacciones complejas. Asimismo, la **estratificación por sexo y edad** permitió descubrir patrones diferenciados que aportan evidencia útil para la formulación de intervenciones específicas en salud pública. Finalmente, las **queries probabilísticas** demostraron ser un recurso valioso para traducir los modelos en resultados interpretables, al cuantificar riesgos concretos y orientar decisiones que contribuyan a mejorar las políticas de prevención y control frente a la contaminación ambiental.  
+En conclusión, este trabajo muestra que la **integración de datos epidemiológicos y ambientales mediante GBN** constituye una herramienta poderosa para comprender interacciones complejas. Asimismo, la **estratificación por sexo y edad** permitió descubrir patrones diferenciados que aportan evidencia útil para la formulación de intervenciones específicas en salud pública. Finalmente, las **queries probabilísticas** demostraron ser un recurso valioso para traducir los modelos en resultados interpretables, al cuantificar riesgos concretos y orientar decisiones que contribuyan a mejorar las políticas de prevención y control frente a la contaminación ambiental.
 
 
 # Referencias
 
-Galera Capilla, M. I. (2020). Redes bayesianas: fundamentos teóricos y uso en R (Trabajo Fin de Grado, Universidad de Almería). Repositorio Institucional UAL. https://repositorio.ual.es/bitstream/handle/10835/19116/GALERA%20CAPILLA%2C%20MARIA%20ISABEL.pdf?sequence=1&isAllowed=y
+Galera Capilla, M. I. (2020). Redes bayesianas: fundamentos teóricos y uso en R (Trabajo Fin de Grado, Universidad de Almería). Repositorio Institucional UAL. \url{https://repositorio.ual.es/bitstream/handle/10835/19116/GALERA%20CAPILLA%2C%20MARIA%20ISABEL.pdf?sequence=1&isAllowed=y}
+
+Montesinos López, O. A. (s.f.). Redes Bayesianas. Centro de Investigación en Matemáticas, A.C. \url{https://probayestadistica.cimat.mx/sites/default/files/PDFs/TE414MontesinosLopez.pdf}
+
 
 
