@@ -97,12 +97,12 @@ NH_3                = NH_3
 ```
 
 ### DAG 1:  Propuesta por el nutriólogo y especialista en ciencias médicas Alberto Bricio.
-![](dag_1.png)
+![Grafo acíclico dirigido 1](dag_1.png)
 
 En esta estructura las variables socio-demográficas, como el sexo y la edad, influyen directamente en los biomarcadores. Por ejemplo, la producción de hemoglobina ocurre en función del sexo y el $PM_{10}$ se relaciona con la densidad de población, representada por el estrato social. Se postula que la exposición a contaminantes atmosféricos como el $SO_2$ y el $CO$ influye directamente en la salud. El $SO_2$ se asocia con el nivel de proteína C reactiva y homocisteína, mientras que el $CO$ impacta en los niveles de albúmina. Finalmente, estas interacciones se reflejan en la salud metabólica y nutricional: la albúmina y la insulina influyen en la hemoglobina glicosilada y el colesterol total, mientras que la edad y la región se relacionan con los niveles de vitamina D.
 
 ### DAG 2: Propuesta por el biomédico y PhD candidate en human genetics Asbiel Garibaldi.
-![](dag_2.png)
+![Grafo acíclico dirigido 2](dag_2.png)
 
 En la segunda estructura se explora la relación entre la exposición a contaminantes ambientales, el estilo de vida, los factores socio-demográficos y los biomarcadores de salud obtenidos mediante muestras de sangre. Se propone que la contaminación del aire por partículas finas ($PM_{2.5}$​ y $PM_{10}$​) causa un perfil inflamatorio en el cuerpo, lo que se refleja en niveles elevados de proteína C reactiva. A largo plazo, esta inflamación crónica podría influir en los niveles de hemoglobina glicosilada.
 
@@ -111,7 +111,7 @@ Además, se plantea que la exposición a óxidos de nitrógeno ($NOx$​) y dió
 En cuanto a los factores de estilo de vida, la dieta juega un papel crucial. Se propone que el consumo de carne roja está asociado con niveles elevados de ácido úrico, mientras que una dieta alta en grasas se correlaciona con el colesterol y los triglicéridos. Un consumo bajo de frutas y verduras se refleja en niveles deficientes de folato, vitamina B12 y vitamina D. La edad y el sexo también se consideran aspectos relevantes en el desarrollo de enfermedades: la edad se relaciona directamente con los niveles de glucosa e insulina, mientras que el sexo influye en la ferritina y la hemoglobina. Finalmente, se postula que vivir en zonas urbanas (representado por el estrato social) influye directamente en el perfil metabólico e inflamatorio debido a una mayor exposición a la contaminación.
 
 ### DAG 3: Propuesta por el médico geriatra Jesús Francisco Gutiérrez Suárez.
-![](dag_3.png)
+![Grafo Acíclico Dirigido 3](dag_3.png)
 
 Este modelo establece que las variables demográficas, como el sexo y la edad, son los nodos principales que influyen en los perfiles metabólicos, afectando directamente los niveles de colesterol LDL, colesterol total, triglicéridos y glucosa.
 
@@ -130,7 +130,7 @@ Ante lo anterior, se convirtieron las variables discretas en un factor, aunque e
 
 Al comparar los valores obtenidos, se eligió el **Modelo 2**, ya que presentó el **BIC y AIC más alto**, lo que indica un mejor equilibrio entre ajuste del modelo y complejidad.  
 
-![](dag_seleccionada.png)
+![Grafo acíclico dirigido seleccionado](dag_seleccionada.png)
 
 Este modelo refleja relaciones plausibles desde un punto de vista epidemiológico:  
 

@@ -142,11 +142,13 @@ window.Quarto = {
   <li><a href="#resultados" id="toc-resultados" class="nav-link" data-scroll-target="#resultados"><span class="header-section-number">4</span> Resultados</a>
   <ul class="collapse">
   <li><a href="#resultados-de-bic-y-aic" id="toc-resultados-de-bic-y-aic" class="nav-link" data-scroll-target="#resultados-de-bic-y-aic"><span class="header-section-number">4.1</span> Resultados de BIC y AIC</a></li>
-  <li><a href="#resultados-de-queries-probabilísticas" id="toc-resultados-de-queries-probabilísticas" class="nav-link" data-scroll-target="#resultados-de-queries-probabilísticas"><span class="header-section-number">4.2</span> Resultados de queries probabilísticas</a></li>
-  <li><a href="#consulta-1-proteína-c-reactiva-vs-pm_2.5" id="toc-consulta-1-proteína-c-reactiva-vs-pm_2.5" class="nav-link" data-scroll-target="#consulta-1-proteína-c-reactiva-vs-pm_2.5"><span class="header-section-number">4.3</span> Consulta 1 · Proteína C Reactiva vs <strong><span class="math inline">\(PM_{2.5}\)</span></strong></a></li>
-  <li><a href="#consulta-2-glucosa-y-contaminante-del-aire" id="toc-consulta-2-glucosa-y-contaminante-del-aire" class="nav-link" data-scroll-target="#consulta-2-glucosa-y-contaminante-del-aire"><span class="header-section-number">4.4</span> Consulta 2 · Glucosa y contaminante del aire</a></li>
-  <li><a href="#consulta-3-colesterol-total-y-so₂" id="toc-consulta-3-colesterol-total-y-so₂" class="nav-link" data-scroll-target="#consulta-3-colesterol-total-y-so₂"><span class="header-section-number">4.5</span> Consulta 3 · Colesterol total y SO₂</a></li>
-  <li><a href="#comparación-de-modelos-por-sexo" id="toc-comparación-de-modelos-por-sexo" class="nav-link" data-scroll-target="#comparación-de-modelos-por-sexo"><span class="header-section-number">4.6</span> Comparación de modelos por sexo</a></li>
+  <li><a href="#resultados-de-queries-probabilísticas" id="toc-resultados-de-queries-probabilísticas" class="nav-link" data-scroll-target="#resultados-de-queries-probabilísticas"><span class="header-section-number">4.2</span> Resultados de queries probabilísticas</a>
+  <ul class="collapse">
+  <li><a href="#consulta-1-proteína-c-reactiva-vs-pm_2.5" id="toc-consulta-1-proteína-c-reactiva-vs-pm_2.5" class="nav-link" data-scroll-target="#consulta-1-proteína-c-reactiva-vs-pm_2.5"><span class="header-section-number">4.2.1</span> Consulta 1 · Proteína C Reactiva vs <strong><span class="math inline">\(PM_{2.5}\)</span></strong></a></li>
+  <li><a href="#consulta-2-glucosa-y-contaminante-del-aire" id="toc-consulta-2-glucosa-y-contaminante-del-aire" class="nav-link" data-scroll-target="#consulta-2-glucosa-y-contaminante-del-aire"><span class="header-section-number">4.2.2</span> Consulta 2 · Glucosa y contaminante del aire</a></li>
+  <li><a href="#consulta-3-colesterol-total-y-so₂" id="toc-consulta-3-colesterol-total-y-so₂" class="nav-link" data-scroll-target="#consulta-3-colesterol-total-y-so₂"><span class="header-section-number">4.2.3</span> Consulta 3 · Colesterol total y SO₂</a></li>
+  </ul></li>
+  <li><a href="#comparación-de-modelos-por-sexo" id="toc-comparación-de-modelos-por-sexo" class="nav-link" data-scroll-target="#comparación-de-modelos-por-sexo"><span class="header-section-number">4.3</span> Comparación de modelos por sexo</a></li>
   </ul></li>
   <li><a href="#resultados-1" id="toc-resultados-1" class="nav-link" data-scroll-target="#resultados-1"><span class="header-section-number">5</span> Resultados</a></li>
   <li><a href="#conclusiones" id="toc-conclusiones" class="nav-link" data-scroll-target="#conclusiones"><span class="header-section-number">6</span> Conclusiones</a></li>
@@ -251,19 +253,34 @@ PM_2_5              = PM_2_5
 NH_3                = NH_3</code></pre>
 <section id="dag-1-propuesta-por-el-nutriólogo-y-especialista-en-ciencias-médicas-alberto-bricio." class="level3" data-number="2.2.1">
 <h3 data-number="2.2.1" class="anchored" data-anchor-id="dag-1-propuesta-por-el-nutriólogo-y-especialista-en-ciencias-médicas-alberto-bricio."><span class="header-section-number">2.2.1</span> DAG 1: Propuesta por el nutriólogo y especialista en ciencias médicas Alberto Bricio.</h3>
-<p><img src="dag_1.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="dag_1.png" class="img-fluid figure-img"></p>
+<figcaption>Grafo acíclico dirigido 1</figcaption>
+</figure>
+</div>
 <p>En esta estructura las variables socio-demográficas, como el sexo y la edad, influyen directamente en los biomarcadores. Por ejemplo, la producción de hemoglobina ocurre en función del sexo y el <span class="math inline">\(PM_{10}\)</span> se relaciona con la densidad de población, representada por el estrato social. Se postula que la exposición a contaminantes atmosféricos como el <span class="math inline">\(SO_2\)</span> y el <span class="math inline">\(CO\)</span> influye directamente en la salud. El <span class="math inline">\(SO_2\)</span> se asocia con el nivel de proteína C reactiva y homocisteína, mientras que el <span class="math inline">\(CO\)</span> impacta en los niveles de albúmina. Finalmente, estas interacciones se reflejan en la salud metabólica y nutricional: la albúmina y la insulina influyen en la hemoglobina glicosilada y el colesterol total, mientras que la edad y la región se relacionan con los niveles de vitamina D.</p>
 </section>
 <section id="dag-2-propuesta-por-el-biomédico-y-phd-candidate-en-human-genetics-asbiel-garibaldi." class="level3" data-number="2.2.2">
 <h3 data-number="2.2.2" class="anchored" data-anchor-id="dag-2-propuesta-por-el-biomédico-y-phd-candidate-en-human-genetics-asbiel-garibaldi."><span class="header-section-number">2.2.2</span> DAG 2: Propuesta por el biomédico y PhD candidate en human genetics Asbiel Garibaldi.</h3>
-<p><img src="dag_2.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="dag_2.png" class="img-fluid figure-img"></p>
+<figcaption>Grafo acíclico dirigido 2</figcaption>
+</figure>
+</div>
 <p>En la segunda estructura se explora la relación entre la exposición a contaminantes ambientales, el estilo de vida, los factores socio-demográficos y los biomarcadores de salud obtenidos mediante muestras de sangre. Se propone que la contaminación del aire por partículas finas (<span class="math inline">\(PM_{2.5}\)</span>​ y <span class="math inline">\(PM_{10}\)</span>​) causa un perfil inflamatorio en el cuerpo, lo que se refleja en niveles elevados de proteína C reactiva. A largo plazo, esta inflamación crónica podría influir en los niveles de hemoglobina glicosilada.</p>
 <p>Además, se plantea que la exposición a óxidos de nitrógeno (<span class="math inline">\(NOx\)</span>​) y dióxido de azufre (<span class="math inline">\(SO_2\)</span>​) genera estrés oxidativo que eleva la homocisteína y exacerba los procesos inflamatorios. Por otro lado, la exposición al monóxido de carbono (<span class="math inline">\(CO\)</span>) afecta la oxigenación, lo que se refleja en una disminución de la hemoglobina y en la función renal, evaluada con la creatinina.</p>
 <p>En cuanto a los factores de estilo de vida, la dieta juega un papel crucial. Se propone que el consumo de carne roja está asociado con niveles elevados de ácido úrico, mientras que una dieta alta en grasas se correlaciona con el colesterol y los triglicéridos. Un consumo bajo de frutas y verduras se refleja en niveles deficientes de folato, vitamina B12 y vitamina D. La edad y el sexo también se consideran aspectos relevantes en el desarrollo de enfermedades: la edad se relaciona directamente con los niveles de glucosa e insulina, mientras que el sexo influye en la ferritina y la hemoglobina. Finalmente, se postula que vivir en zonas urbanas (representado por el estrato social) influye directamente en el perfil metabólico e inflamatorio debido a una mayor exposición a la contaminación.</p>
 </section>
 <section id="dag-3-propuesta-por-el-médico-geriatra-jesús-francisco-gutiérrez-suárez." class="level3" data-number="2.2.3">
 <h3 data-number="2.2.3" class="anchored" data-anchor-id="dag-3-propuesta-por-el-médico-geriatra-jesús-francisco-gutiérrez-suárez."><span class="header-section-number">2.2.3</span> DAG 3: Propuesta por el médico geriatra Jesús Francisco Gutiérrez Suárez.</h3>
-<p><img src="dag_3.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="dag_3.png" class="img-fluid figure-img"></p>
+<figcaption>Grafo Acíclico Dirigido 3</figcaption>
+</figure>
+</div>
 <p>Este modelo establece que las variables demográficas, como el sexo y la edad, son los nodos principales que influyen en los perfiles metabólicos, afectando directamente los niveles de colesterol LDL, colesterol total, triglicéridos y glucosa.</p>
 <p>El modelo propone que la <strong>exposición a contaminantes del aire</strong>, como el monóxido de carbono (CO), el dióxido de azufre (<span class="math inline">\(SO_2\)</span>​) y el amoníaco (<span class="math inline">\(NH_3\)</span>​), está determinada por el estrato socioeconómico y la región. La <strong>hemoglobina</strong> es un biomarcador clave en esta estructura, ya que se encuentra en el centro de las dependencias, siendo influenciada por una combinación de factores ambientales (<span class="math inline">\(CO\)</span>, <span class="math inline">\(NOx\)</span>​), demográficos (sexo, edad, región) y nutricionales (ferritina, folato, vitamina B12). Finalmente, los indicadores de salud a largo plazo, como la <strong>hemoglobina glicosilada</strong>, dependen de las interacciones entre el sexo, la edad y los niveles de hemoglobina y glucosa.</p>
 <p>En resumen, los tres modelos de DAGs coinciden en estructurar las variables sociodemográficas como puntos de partida, de modo que sexo, edad y región siempre aparecen como nodos iniciales, y en todos los casos se observa que variables metabólicas como glucosa, colesterol total, hemoglobina o insulina son consideradas desenlaces intermedios o finales. Sin embargo, difieren en cómo se asignan los papeles de mediación: por ejemplo, en un modelo <em>estrato</em> funciona como nexo entre municipio y hemoglobina, reflejando un interés en capturar determinantes sociales de la salud; mientras que en otro se enfatiza la ruta bioquímica al ligar proteína C reactiva con glucosa y colesterol, sugiriendo una perspectiva más biomédica que prioriza la inflamación como factor central. De forma similar, un modelo coloca a la albúmina como variable puente entre <span class="math inline">\(CO\)</span> y hemoglobina glicosilada, mientras que en otro este rol lo asume la insulina, mostrando dos formas distintas de concebir la relación entre metabolismo energético y marcadores de función hepática. Estas diferencias probablemente se deben a que cada investigador pondera de manera distinta la evidencia previa: quienes priorizan variables sociales construyen DAGs más jerárquicos con capas de contexto (municipio, estrato), mientras que quienes priorizan la fisiología molecular trazan rutas más directas entre biomarcadores. En resumen, los puntos en común muestran un consenso en las variables clave, pero las divergencias reflejan enfoques disciplinarios y prioridades teóricas distintas.</p>
@@ -276,7 +293,12 @@ NH_3                = NH_3</code></pre>
 <section id="selección-del-modelo" class="level3" data-number="2.3.1">
 <h3 data-number="2.3.1" class="anchored" data-anchor-id="selección-del-modelo"><span class="header-section-number">2.3.1</span> Selección del modelo</h3>
 <p>Al comparar los valores obtenidos, se eligió el <strong>Modelo 2</strong>, ya que presentó el <strong>BIC y AIC más alto</strong>, lo que indica un mejor equilibrio entre ajuste del modelo y complejidad.</p>
-<p><img src="dag_seleccionada.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="dag_seleccionada.png" class="img-fluid figure-img"></p>
+<figcaption>Grafo acíclico dirigido seleccionado</figcaption>
+</figure>
+</div>
 <p>Este modelo refleja relaciones plausibles desde un punto de vista epidemiológico:</p>
 <ul>
 <li><strong>Edad</strong> influye en biomarcadores como colesterol total, ácido úrico, triglicéridos y creatinina, además de estar relacionada con glucosa, insulina y vitamina D.<br>
@@ -394,32 +416,32 @@ El objetivo fue estimar <strong>probabilidades condicionales</strong> de variabl
 </section>
 <section id="resultados-de-queries-probabilísticas" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="resultados-de-queries-probabilísticas"><span class="header-section-number">4.2</span> Resultados de queries probabilísticas</h2>
-</section>
-<section id="consulta-1-proteína-c-reactiva-vs-pm_2.5" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="consulta-1-proteína-c-reactiva-vs-pm_2.5"><span class="header-section-number">4.3</span> Consulta 1 · Proteína C Reactiva vs <strong><span class="math inline">\(PM_{2.5}\)</span></strong></h2>
+<section id="consulta-1-proteína-c-reactiva-vs-pm_2.5" class="level3" data-number="4.2.1">
+<h3 data-number="4.2.1" class="anchored" data-anchor-id="consulta-1-proteína-c-reactiva-vs-pm_2.5"><span class="header-section-number">4.2.1</span> Consulta 1 · Proteína C Reactiva vs <strong><span class="math inline">\(PM_{2.5}\)</span></strong></h3>
 <p><strong>Pregunta.</strong> ¿Cuál es la probabilidad de que una persona tenga <strong>proteína C reactiva &gt; 10 mg/L</strong> dado que la concentración de <strong><span class="math inline">\(PM_{2.5}\)</span> <span class="math inline">\(\leq\)</span> 155 μg/m³</strong>?</p>
 <p><span class="math display">\[
 \mathbb{P}\!\left(\text{proteina\_cr} &gt; 0.001 \;\middle|\; PM_{2.5} \leq 155 \,\mu\text{g}/\text{m}^3\right)
 \]</span></p>
 <hr>
 </section>
-<section id="consulta-2-glucosa-y-contaminante-del-aire" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="consulta-2-glucosa-y-contaminante-del-aire"><span class="header-section-number">4.4</span> Consulta 2 · Glucosa y contaminante del aire</h2>
+<section id="consulta-2-glucosa-y-contaminante-del-aire" class="level3" data-number="4.2.2">
+<h3 data-number="4.2.2" class="anchored" data-anchor-id="consulta-2-glucosa-y-contaminante-del-aire"><span class="header-section-number">4.2.2</span> Consulta 2 · Glucosa y contaminante del aire</h3>
 <p><strong>Pregunta.</strong> ¿Cuál es la probabilidad de que una persona tenga <strong>glucosa en ayuno &gt; 126 mg/dL</strong> dado que es <strong>mayor o igual a 50 años</strong> y está expuesta a <strong>NOx &gt;= 40 ppb</strong>?</p>
 <p><span class="math display">\[
 \mathbb{P}\!\left(\mathrm{glucosa}&gt;126\ \text{mg/dL}\ \middle|\ \mathrm{edad}\geq 50,\ NOx&gt;=40\ \text{ppb}\right) = 0.1798456
 \]</span></p>
 <hr>
 </section>
-<section id="consulta-3-colesterol-total-y-so₂" class="level2" data-number="4.5">
-<h2 data-number="4.5" class="anchored" data-anchor-id="consulta-3-colesterol-total-y-so₂"><span class="header-section-number">4.5</span> Consulta 3 · Colesterol total y SO₂</h2>
+<section id="consulta-3-colesterol-total-y-so₂" class="level3" data-number="4.2.3">
+<h3 data-number="4.2.3" class="anchored" data-anchor-id="consulta-3-colesterol-total-y-so₂"><span class="header-section-number">4.2.3</span> Consulta 3 · Colesterol total y SO₂</h3>
 <p><strong>Pregunta.</strong> ¿Cuál es la probabilidad de que una persona tenga <strong>colesterol total &gt; 130 mg/dL</strong> dado un nivel de <strong>SO₂ &gt;= 80 ppb</strong>?</p>
 <p><span class="math display">\[
 \mathbb{P}\!\left(\mathrm{colesterol\_total}&gt;130\ \text{mg/dL}\ \middle|\ SO_2&gt;=80\ \text{ppb}\right) = 0.86975
 \]</span></p>
 </section>
-<section id="comparación-de-modelos-por-sexo" class="level2" data-number="4.6">
-<h2 data-number="4.6" class="anchored" data-anchor-id="comparación-de-modelos-por-sexo"><span class="header-section-number">4.6</span> Comparación de modelos por sexo</h2>
+</section>
+<section id="comparación-de-modelos-por-sexo" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="comparación-de-modelos-por-sexo"><span class="header-section-number">4.3</span> Comparación de modelos por sexo</h2>
 <ul>
 <li><strong>BIC para hombres:</strong> -2,427,498<br>
 </li>
@@ -475,7 +497,7 @@ El objetivo fue estimar <strong>probabilidades condicionales</strong> de variabl
 </section>
 <section id="conclusiones" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> Conclusiones</h1>
-<p>Para poder llevar a cabo experimientaciones con datos es de gran relevancia tener cierta noción sobre los datos con los que se están trabajando y con base en ello poder trazar los caminos más adecuados a seguir. En este caso, para la elaboración de este artículo, fue necesario la consulta con especialistas para así entender mejor las bases de datos con las que se trabaja y direccionar la investigación a un camino con mayor sentido, demostrando la suma importancia del trabajo colaborativo y multidisciplinario para la obtención de mejores resultados.</p>
+<p>Para poder llevar a cabo experimientaciones con datos es de gran relevancia tener cierta noción sobre los datos con los que se están trabajando y con base en ello poder trazar los caminos más adecuados a seguir. En este caso, para la elaboración de este artículo, fue necesario la consulta con especialistas para así entender mejor las bases de datos con las que se trabaja y direccionar la investigación a un camino con mayor sentido, demostrando la suma importancia del trabajo colaborativo y multidisciplinario para la obtención de mejores resultados. El uso de redes bayesianas gaussianas permitió analizar la relación entre contaminantes ambientales y biomarcadores de salud en la población mexicana, a pesar de las limitaciones para incorporar variables categóricas de manera directa. La selección y ajuste de modelos reveló diferencias en la influencia de variables ambientales y demográficas sobre la salud, así como algunas variaciones por sexo. Estos resultados refuerzan la utilidad de los enfoques probabilísticos en salud pública y destacan la importancia de seguir explorando métodos más flexibles para integrar datos mixtos en futuros estudios.</p>
 </section>
 <section id="referencias" class="level1" data-number="7">
 <h1 data-number="7"><span class="header-section-number">7</span> Referencias</h1>
@@ -1054,12 +1076,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a><span class="fu">### DAG 1:  Propuesta por el nutriólogo y especialista en ciencias médicas Alberto Bricio.</span></span>
-<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a><span class="al">![](dag_1.png)</span></span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a><span class="al">![Grafo acíclico dirigido 1](dag_1.png)</span></span>
 <span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a>En esta estructura las variables socio-demográficas, como el sexo y la edad, influyen directamente en los biomarcadores. Por ejemplo, la producción de hemoglobina ocurre en función del sexo y el $PM_{10}$ se relaciona con la densidad de población, representada por el estrato social. Se postula que la exposición a contaminantes atmosféricos como el $SO_2$ y el $CO$ influye directamente en la salud. El $SO_2$ se asocia con el nivel de proteína C reactiva y homocisteína, mientras que el $CO$ impacta en los niveles de albúmina. Finalmente, estas interacciones se reflejan en la salud metabólica y nutricional: la albúmina y la insulina influyen en la hemoglobina glicosilada y el colesterol total, mientras que la edad y la región se relacionan con los niveles de vitamina D.</span>
 <span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a><span class="fu">### DAG 2: Propuesta por el biomédico y PhD candidate en human genetics Asbiel Garibaldi.</span></span>
-<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a><span class="al">![](dag_2.png)</span></span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a><span class="al">![Grafo acíclico dirigido 2](dag_2.png)</span></span>
 <span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a>En la segunda estructura se explora la relación entre la exposición a contaminantes ambientales, el estilo de vida, los factores socio-demográficos y los biomarcadores de salud obtenidos mediante muestras de sangre. Se propone que la contaminación del aire por partículas finas ($PM_{2.5}$​ y $PM_{10}$​) causa un perfil inflamatorio en el cuerpo, lo que se refleja en niveles elevados de proteína C reactiva. A largo plazo, esta inflamación crónica podría influir en los niveles de hemoglobina glicosilada.</span>
 <span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a></span>
@@ -1068,7 +1090,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a>En cuanto a los factores de estilo de vida, la dieta juega un papel crucial. Se propone que el consumo de carne roja está asociado con niveles elevados de ácido úrico, mientras que una dieta alta en grasas se correlaciona con el colesterol y los triglicéridos. Un consumo bajo de frutas y verduras se refleja en niveles deficientes de folato, vitamina B12 y vitamina D. La edad y el sexo también se consideran aspectos relevantes en el desarrollo de enfermedades: la edad se relaciona directamente con los niveles de glucosa e insulina, mientras que el sexo influye en la ferritina y la hemoglobina. Finalmente, se postula que vivir en zonas urbanas (representado por el estrato social) influye directamente en el perfil metabólico e inflamatorio debido a una mayor exposición a la contaminación.</span>
 <span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a><span class="fu">### DAG 3: Propuesta por el médico geriatra Jesús Francisco Gutiérrez Suárez.</span></span>
-<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a><span class="al">![](dag_3.png)</span></span>
+<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a><span class="al">![Grafo Acíclico Dirigido 3](dag_3.png)</span></span>
 <span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a>Este modelo establece que las variables demográficas, como el sexo y la edad, son los nodos principales que influyen en los perfiles metabólicos, afectando directamente los niveles de colesterol LDL, colesterol total, triglicéridos y glucosa.</span>
 <span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a></span>
@@ -1087,7 +1109,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb2-130"><a href="#cb2-130" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-131"><a href="#cb2-131" aria-hidden="true" tabindex="-1"></a>Al comparar los valores obtenidos, se eligió el **Modelo 2**, ya que presentó el **BIC y AIC más alto**, lo que indica un mejor equilibrio entre ajuste del modelo y complejidad.  </span>
 <span id="cb2-132"><a href="#cb2-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-133"><a href="#cb2-133" aria-hidden="true" tabindex="-1"></a><span class="al">![](dag_seleccionada.png)</span></span>
+<span id="cb2-133"><a href="#cb2-133" aria-hidden="true" tabindex="-1"></a><span class="al">![Grafo acíclico dirigido seleccionado](dag_seleccionada.png)</span></span>
 <span id="cb2-134"><a href="#cb2-134" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-135"><a href="#cb2-135" aria-hidden="true" tabindex="-1"></a>Este modelo refleja relaciones plausibles desde un punto de vista epidemiológico:  </span>
 <span id="cb2-136"><a href="#cb2-136" aria-hidden="true" tabindex="-1"></a></span>
@@ -1176,7 +1198,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb2-219"><a href="#cb2-219" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-220"><a href="#cb2-220" aria-hidden="true" tabindex="-1"></a><span class="fu">## Resultados de queries probabilísticas</span></span>
 <span id="cb2-221"><a href="#cb2-221" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-222"><a href="#cb2-222" aria-hidden="true" tabindex="-1"></a><span class="fu">## Consulta 1 · Proteína C Reactiva vs **$PM_{2.5}$**</span></span>
+<span id="cb2-222"><a href="#cb2-222" aria-hidden="true" tabindex="-1"></a><span class="fu">### Consulta 1 · Proteína C Reactiva vs **$PM_{2.5}$**</span></span>
 <span id="cb2-223"><a href="#cb2-223" aria-hidden="true" tabindex="-1"></a>**Pregunta.** ¿Cuál es la probabilidad de que una persona tenga **proteína C reactiva &gt; 10 mg/L** dado que la concentración de **$PM_{2.5}$ $\leq$ 155 μg/m³**?</span>
 <span id="cb2-224"><a href="#cb2-224" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-225"><a href="#cb2-225" aria-hidden="true" tabindex="-1"></a></span>
@@ -1186,7 +1208,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb2-229"><a href="#cb2-229" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-230"><a href="#cb2-230" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb2-231"><a href="#cb2-231" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-232"><a href="#cb2-232" aria-hidden="true" tabindex="-1"></a><span class="fu">## Consulta 2 · Glucosa y contaminante del aire</span></span>
+<span id="cb2-232"><a href="#cb2-232" aria-hidden="true" tabindex="-1"></a><span class="fu">### Consulta 2 · Glucosa y contaminante del aire</span></span>
 <span id="cb2-233"><a href="#cb2-233" aria-hidden="true" tabindex="-1"></a>**Pregunta.** ¿Cuál es la probabilidad de que una persona tenga **glucosa en ayuno &gt; 126 mg/dL** dado que es **mayor o igual a 50 años** y está expuesta a **NOx &gt;= 40 ppb**?</span>
 <span id="cb2-234"><a href="#cb2-234" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-235"><a href="#cb2-235" aria-hidden="true" tabindex="-1"></a>$$</span>
@@ -1198,7 +1220,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb2-241"><a href="#cb2-241" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-242"><a href="#cb2-242" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb2-243"><a href="#cb2-243" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-244"><a href="#cb2-244" aria-hidden="true" tabindex="-1"></a><span class="fu">## Consulta 3 · Colesterol total y SO₂</span></span>
+<span id="cb2-244"><a href="#cb2-244" aria-hidden="true" tabindex="-1"></a><span class="fu">### Consulta 3 · Colesterol total y SO₂</span></span>
 <span id="cb2-245"><a href="#cb2-245" aria-hidden="true" tabindex="-1"></a>**Pregunta.** ¿Cuál es la probabilidad de que una persona tenga **colesterol total &gt; 130 mg/dL** dado un nivel de **SO₂ &gt;= 80 ppb**?</span>
 <span id="cb2-246"><a href="#cb2-246" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-247"><a href="#cb2-247" aria-hidden="true" tabindex="-1"></a>$$</span>
@@ -1239,7 +1261,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb2-282"><a href="#cb2-282" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-283"><a href="#cb2-283" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-284"><a href="#cb2-284" aria-hidden="true" tabindex="-1"></a><span class="fu"># Conclusiones</span></span>
-<span id="cb2-285"><a href="#cb2-285" aria-hidden="true" tabindex="-1"></a>Para poder llevar a cabo experimientaciones con datos es de gran relevancia tener cierta noción sobre los datos con los que se están trabajando y con base en ello poder trazar los caminos más adecuados a seguir. En este caso, para la elaboración de este artículo, fue necesario la consulta con especialistas para así entender mejor las bases de datos con las que se trabaja y direccionar la investigación a un camino con mayor sentido, demostrando la suma importancia del trabajo colaborativo y multidisciplinario para la obtención de mejores resultados.</span>
+<span id="cb2-285"><a href="#cb2-285" aria-hidden="true" tabindex="-1"></a>Para poder llevar a cabo experimientaciones con datos es de gran relevancia tener cierta noción sobre los datos con los que se están trabajando y con base en ello poder trazar los caminos más adecuados a seguir. En este caso, para la elaboración de este artículo, fue necesario la consulta con especialistas para así entender mejor las bases de datos con las que se trabaja y direccionar la investigación a un camino con mayor sentido, demostrando la suma importancia del trabajo colaborativo y multidisciplinario para la obtención de mejores resultados. El uso de redes bayesianas gaussianas permitió analizar la relación entre contaminantes ambientales y biomarcadores de salud en la población mexicana, a pesar de las limitaciones para incorporar variables categóricas de manera directa. La selección y ajuste de modelos reveló diferencias en la influencia de variables ambientales y demográficas sobre la salud, así como algunas variaciones por sexo. Estos resultados refuerzan la utilidad de los enfoques probabilísticos en salud pública y destacan la importancia de seguir explorando métodos más flexibles para integrar datos mixtos en futuros estudios.</span>
 <span id="cb2-286"><a href="#cb2-286" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-287"><a href="#cb2-287" aria-hidden="true" tabindex="-1"></a><span class="fu"># Referencias</span></span>
 <span id="cb2-288"><a href="#cb2-288" aria-hidden="true" tabindex="-1"></a></span>
