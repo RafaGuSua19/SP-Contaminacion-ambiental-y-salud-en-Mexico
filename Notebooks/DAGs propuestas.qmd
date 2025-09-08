@@ -33,11 +33,43 @@ library(bnlearn)
 ```{r}
 #colnames(data) = c("N", "P", "K", "T", "H", "pH", "R", "Y") #cambiamos el nombre de las columnas, en caso de ser necesario, si no las mismas variables permanecen
 ```
-
+```         
+desc_ent1           = entidad
+desc_mun1           = municipio
+h0302               = sexo
+h0303               = edad
+estrato             = estrato
+region              = region
+hb02                = hemoglobina
+valor_AC_URICO      = acido_urico
+valor_ALBU          = albumina
+valor_COL_HDL       = col_hdl
+valor_COL_LDL       = colo_ldl
+valor_COLEST        = colesterol_total
+valor_CREAT         = creatinina
+valor_GLU_SUERO     = glucosa
+valor_INSULINA      = insulina
+valor_PCR           = proteina_cr
+valor_TRIG          = trigliceridos
+valor_HB1AC         = hemoglobina_glucos
+valor_FERRITINA     = ferritina
+valor_FOL           = folato
+valor_HCST          = homocistenia
+valor_STFR_FEB23    = receptor_transferrr
+valor_VIT_B12       = vit_b12
+valor_VIT_D         = vit_d
+SO_2                = SO_2
+CO                  = CO
+NOx                 = NOx
+COV                 = COV
+PM_010              = PM_010
+PM_2_5              = PM_2_5
+NH_3                = NH_3
+```
 DAG 1: Propuesta por el nutriólogo y especialista en ciencias médicas Alberto Bricio. Sexo tiene que ver con Hb (menor en mujeres). Lo rural se asocia con menores Hb y puede que con PM10 (?) Pensaría que mientras más CO, menos Albúmina Más insulina con HbA1c y las demás del perfíl de lípidos. menos Vitamina D mientras más edad. más prot C reactiva con SO2 (?), pero si con más Colesterol y glucosa Puede que más B12 en área urbana. Más Homocisteína con menos B12 y más Prot C reactiva.
 
 ```{r}
-dag1 = model2network("[h0302][h0303][region][CO|entidad][SO2][valor_HCST][valor_INSULINA|h0302:valor_ALBU][estrato|municipio][municipio|entidad][entidad|region][valor_PCR|valor_HCST:SO2][valor_VIT_B12|valor_HCST:estrato][valor_GLU_SUERO|valor_PCR][valor_COLEST|valor_PCR:valor_INSULINA][valor_VIT_D|h0303:region][valor_HB1AC|valor_INSULINA:valor_ALBU][valor_ALBU|CO][PM10|estrato][hb02|estrato:h0302]") 
+dag1 = model2network("[sexo][edad][region][CO|entidad][SO_2][homocistenia][insulina|sexo:albumina][estrato|municipio][municipio|entidad][entidad|region][proteina_cr|homocistenia:SO_2][vit_b12|homocistenia:estrato][glucosa|proteina_cr][colesterol_total|proteina_cr:insulina][vit_d|edad:region][hemoglobina_glucos|insulina:albumina][albumina|CO][PM_010|estrato][hemoglobina|estrato:sexo]") 
 ```
 
 aún tengo duda en esto, estoy por confirmar: "más prot C reactiva con SO2 (?), pero si con más Colesterol y glucosa", sería como que el SO2, Colesterol y Glucosa los 3 dependen de la proteína c reactiva? o de dónde a dónde va la dependencia? También con ésta: "Más Homocisteína con menos B12 y más Prot C reactiva." Sería que la B12 y prto C reactiva dependen de la Homocisteína? También falta agregarle la relación de la insulina y lípidos
@@ -56,7 +88,7 @@ DAG 2: Propuesta por el biomédico y PhD candidate en human genetics Asbiel Gari
 por un lado la contaminacion por particulas finas tipo pm25 y pm10 se suele ver con inflamacion en el cuerpo, eso al rato se refleja en niveles altos de proteina c reactiva y ya a largo plazo a veces hasta en la hemoglobina glucosilada, los oxidos de nitrogeno y el dioxido de azufre tambien generan estres oxidativo, entonces pueden subir la homocisteina y dar mas procesos inflamatorios. el monoxido de carbono afecta la oxigenacion y eso igual pega en la hemoglobina y si nos ponemos mas criticos hasta en la funcion renal medida con la creatinina. en estilo de vida, pues comer mucha carne roja sube el acido urico, las dietas con mucha grasa se ven en colesterol y trigliceridos, y si no comes frutas/verduras bajas en folato, b12 y vitamina d. la edad obvio aumenta riesgo de glucosa e insulina elevadas, y entre hombres y mujeres cambian cosas como la ferritina o la hemoglobina por el ciclo menstrual vivir en zonas urbanas te expone a mas contaminantes y da un perfil inflamatorio/metabolico mas alterado q en zonas rurales, aunque tmb en el campo se ven broncas x contaminantes de cultivos, pesticidas etc
 
 ```{r}
-dag2 = model2network("[h0302][h0303][region][estrato|region][CO|estrato][SO2|estrato][NOx|estrato][PM10|estrato][PM25|estrato][valor_HCST|NOx:SO2][valor_PCR|PM10:PM25:valor_HCST][hb02|h0302:CO][valor_CREAT|CO:h0303][valor_GLU_SUERO|h0303][valor_INSULINA|h0303][valor_HB1AC|valor_GLU_SUERO:valor_INSULINA:valor_PCR][valor_FERRITINA|h0302][valor_VIT_D|h0303:estrato][valor_VIT_B12|estrato][valor_FOL|estrato][valor_COLEST|estrato:h0303][valor_TRIG|estrato:h0303][valor_AC_URICO|estrato:h0303]") 
+dag2 = model2network("[sexo][edad][region][estrato|region][CO|estrato][SO_2|estrato][NOx|estrato][PM_010|estrato][PM_2_5|estrato][homocistenia|NOx:SO_2][proteina_cr|PM_010:PM_2_5:homocistenia][hemoglobina|sexo:CO][creatinina|CO:edad][glucosa|edad][insulina|edad][hemoglobina_glucos|glucosa:insulina:proteina_cr][ferritina|sexo][vit_d|edad:estrato][vit_b12|estrato][folato|estrato][colesterol_total|estrato:edad][trigliceridos|estrato:edad][acido_urico|estrato:edad]") 
 ```
 
 ```{r}
@@ -70,7 +102,7 @@ graphviz.plot(dag2, shape = "ellipse")
 DAG 3: Propuesta por el médico geriatra Jesús Francisco Gutiérrez Suárez.
 
 ```{r}
-dag3 = model2network("[h0302][h0303][region][estrato|municipio][municipio|entidad][entidad|region][valor_VIT_B12][valor_FERRITINA][valor_FOL][CO|estrato][NH3|estrato][SO2|estrato][NOx][hb02|h0302:h0303:region:valor_VIT_B12:valor_FOL:valor_FERRITINA:CO:NOx][valor_STFR_FEB23|region:hb02][valor_GLU_SUERO|h0303][valor_HB1AC|h0302:h0303:hb02:valor_GLU_SUERO][valor_INSULINA|valor_GLU_SUERO][valor_COL_LDL|h0302][valor_COLEST|h0302:h0303][valor_TRIG|h0303]") 
+dag3 = model2network("[sexo][edad][region][estrato|municipio][municipio|entidad][entidad|region][vit_b12][ferritina][folato][CO|estrato][NH_3|estrato][SO_2|estrato][NOx][hemoglobina|sexo:edad:region:vit_b12:folato:ferritina:CO:NOx][receptor_transferrr|region:hemoglobina][glucosa|edad][hemoglobina_glucos|sexo:edad:hemoglobina:glucosa][insulina|glucosa][colo_ldl|sexo][colesterol_total|sexo:edad][trigliceridos|edad]") 
 ```
 
 ```{r}
@@ -78,5 +110,5 @@ dag3
 ```
 
 ```{r}
-graphviz.plot(dag3, shape = "rectangle")
+graphviz.plot(dag3, shape = "ellipse")
 ```
