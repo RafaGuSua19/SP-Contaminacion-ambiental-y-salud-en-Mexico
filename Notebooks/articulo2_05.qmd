@@ -132,8 +132,8 @@ Al comparar los valores obtenidos, se eligió el **Modelo 2**, ya que presentó 
 Este modelo refleja relaciones plausibles desde un punto de vista epidemiológico:  
 
 - **Edad** influye en biomarcadores como colesterol total, ácido úrico, triglicéridos y creatinina, además de estar relacionada con glucosa, insulina y vitamina D.  
-- **Municipio** concentra las conexiones con contaminantes ambientales (CO, NOx, SO₂, PM₁₀, PM₂.₅) y micronutrientes (folato, vitamina B12), reflejando la variación espacial de exposición y condiciones ambientales.  
-- Variables como **hemoglobina glucosilada** y **proteína C-reactiva** aparecen al final de la red, recibiendo influencias de varios factores metabólicos y ambientales, lo que sugiere su papel como posibles variables de resultado o integración de riesgos.  
+- **Municipio** concentra las conexiones con contaminantes ambientales ($CO$, $NOx$, $SO_2$, $PM_{10}$, $PM_{2.5}$) y micronutrientes (folato, vitamina B12), reflejando la variación espacial de exposición y condiciones ambientales.  
+- Variables como **hemoglobina glicosilada** y **proteína C-reactiva** aparecen al final de la red, recibiendo influencias de varios factores metabólicos y ambientales, lo que sugiere su papel como posibles variables de resultado o integración de riesgos.  
 
 En conjunto, la estructura del Modelo 2 muestra cómo las características demográficas (edad) y contextuales (municipio) actúan como determinantes principales sobre los biomarcadores de salud, lo que refuerza su pertinencia como modelo seleccionado.
 
@@ -141,11 +141,11 @@ En conjunto, la estructura del Modelo 2 muestra cómo las características demog
 
 Uno de los principales retos al construir redes bayesianas gaussianas con datos reales es la inclusión de variables categóricas, como sexo, región o estrato. Estos modelos están diseñados para trabajar con variables continuas, por lo que no es posible incluir directamente variables discretas sin perder validez estadística o recurrir a técnicas más avanzadas.
 
-En este trabajo, exploramos distintas alternativas para abordar este problema, ya que el sexo era una variable central por requerimiento de la tarea. Primero, intentamos discretizar variables continuas y convertir las categóricas en factores, pero esto no resolvió la incompatibilidad con la GBN pura. También revisamos la literatura sobre métodos mixtos, como el modelo condicional gaussiano (CLG) y otros enfoques más complejos, aunque no fueron implementados en este análisis por su mayor complejidad y restricciones de software.
+En este trabajo, fueron exploradas distintas alternativas para abordar este problema, ya que el sexo es una variable central por requerimiento de la tarea. Primero, se intentó discretizar variables continuas y convertir las categóricas en factores, pero esto no resolvió la incompatibilidad con la GBN pura. También se revisó la literatura sobre métodos mixtos, como el modelo condicional gaussiano (CLG) y otros enfoques más complejos, aunque no fueron implementados en este análisis por su mayor complejidad y restricciones de software.
 
-Finalmente, para poder analizar la influencia del sexo y cumplir con el objetivo de comparar diferencias por género, optamos por **estratificar la base de datos**, ajustando una red separada para hombres y otra para mujeres. Esta estrategia, aunque sencilla, nos permitió identificar posibles diferencias en la estructura y los parámetros del modelo según sexo, aunque también limita la posibilidad de analizar interacciones conjuntas entre variables categóricas y continuas.
+Finalmente, para poder analizar la influencia del sexo y cumplir con el objetivo de comparar diferencias por género, se decidió **estratificar la base de datos**, ajustando una red separada para hombres y otra para mujeres. Esta estrategia, aunque sencilla, permitió identificar posibles diferencias en la estructura y los parámetros del modelo según sexo; sin embargo, también limita la posibilidad de analizar interacciones conjuntas entre variables categóricas y continuas.
 
-En resumen, la imposibilidad de incluir variables categóricas en las GBN con `bnlearn` nos llevó a comparar subgrupos por separado. Reconocemos que existen alternativas metodológicas para integrar datos mixtos en redes bayesianas, pero cada una implica distintas limitaciones y complejidades.
+En resumen, la imposibilidad de incluir variables categóricas en las GBN con `bnlearn` concluyó en comparar subgrupos por separado. Dentro del equipo se reconoce que existen alternativas metodológicas para integrar datos mixtos en redes bayesianas, pero cada una implica distintas limitaciones y complejidades.
 
 
 # Aplicación
@@ -164,7 +164,7 @@ El objetivo fue estimar **probabilidades condicionales** de variables de interé
 
 Para cada consulta:  
 - Se definió un **evento de interés clínico o epidemiológico** (ej. proteína C reactiva elevada, glucosa alta, colesterol elevado).  
-- Se establecieron las condiciones de **evidencia** (ej. exposición a contaminantes como PM₂.₅, NOx o SO₂, o pertenecer a un grupo de edad).  
+- Se establecieron las condiciones de **evidencia** (ej. exposición a contaminantes como $PM_{2.5}$, $NOx$ o $SO_{2}$, o pertenecer a un grupo de edad).  
 - Se utilizó el método de **simulación** con al menos $10^6$ muestras (`n = 10^6`), lo que permitió obtener estimaciones robustas y estables de las probabilidades condicionales.  
 
 
@@ -174,7 +174,7 @@ Con el objetivo de cumplir el requerimiento de comparar diferencias por sexo, la
 
 ## Modelos no paramétricos y comparación AIC/BIC
 
-Respetamos la estructura causal de la DAG y sustituimos, nodo por nodo, los modelos lineales por **modelos aditivos generalizados (GAM)** usando *mgcv*. Para cada relación padre → hijo se especificó una función suave `s(·)` que permite no linealidades. Por ejemplo:
+Fue respetada la estructura causal de la DAG y se sustituyó, nodo por nodo, los modelos lineales por **modelos aditivos generalizados (GAM)** usando *mgcv*. Para cada relación padre → hijo se especificó una función suave `s(·)` que permite no linealidades. Por ejemplo:
 
 - `vit_d ~ s(edad)`  
 - `colesterol_total ~ s(edad)`  
@@ -183,13 +183,13 @@ Respetamos la estructura causal de la DAG y sustituimos, nodo por nodo, los mode
 
 Asimismo, se mantuvieron los nodos raíz como intercepto (`edad ~ 1`). El nodo **municipio** se trató como exógeno (factor), sin modelarlo como respuesta.
 
-Para evaluar el ajuste global de la red, agregamos los criterios de información **nodo a nodo** y reportamos:
+Para evaluar el ajuste global de la red, fueron agregados los criterios de información **nodo a nodo** y se reportó:
 
 $$
 \text{BIC}_{\text{bnlearn}} \;=\; \ell(\hat{\theta}; \mathbf{x}) \;-\; \frac{k}{2}\log(n),
 $$
 
-Con esta convención, valores **más altos** indican mejor ajuste penalizado (equivalente a menores AIC/BIC totales).
+Con esta convención, los valores **más altos** indican mejor ajuste penalizado (equivalente a menores AIC/BIC totales).
 
 ### 4.2. Resultado principal  
 El ajuste no paramétrico obtuvo:
@@ -206,7 +206,7 @@ Por tanto, **el BIC no mejoró** al introducir suavizadores.
 
 ## Resultados de BIC y AIC
 
-Las tres estructuras DAG ajustadas fueron evaluadas con los criterios de información **BIC** y **AIC**, considerando únicamente las variables continuas (`edad`, `municipio` y `entidad`), ya que `estrato`, `región` y `sexo` fueron eliminadas por los problemas ya explicados.  
+Las tres estructuras DAG ajustadas fueron evaluadas con los criterios de información **BIC** y **AIC**, considerando únicamente las variables socio-demográficas continuas (`edad`, `municipio` y `entidad`), ya que `estrato`, `región` y `sexo` fueron eliminadas por los problemas ya explicados.  
 
 | Modelo | BIC       | AIC       |
 |--------|-----------|-----------|
@@ -216,8 +216,8 @@ Las tres estructuras DAG ajustadas fueron evaluadas con los criterios de informa
 
 ## Resultados de queries probabilísticas
 
-## Consulta 1 · Proteína C Reactiva vs PM2.5
-**Pregunta.** ¿Cuál es la probabilidad de que una persona tenga **proteína C reactiva > 10 mg/L** dado que la concentración de **PM₂.₅ <= 155 μg/m³**?
+## Consulta 1 · Proteína C Reactiva vs **$PM_{2.5}$**
+**Pregunta.** ¿Cuál es la probabilidad de que una persona tenga **proteína C reactiva > 10 mg/L** dado que la concentración de **$PM_{2.5}$ $\leq$ 155 μg/m³**?
 
 
 $$
@@ -252,7 +252,7 @@ $$
 - **BIC para hombres:** -2,427,498  
 - **BIC para mujeres:** -2,748,215  
 
-Se observaron diferencias en los parámetros de algunos nodos, como la influencia de la glucosa sobre la hemoglobina glucosilada, siendo mayor en mujeres que en hombres.
+Se observaron diferencias en los parámetros de algunos nodos, como la influencia de la glucosa sobre la hemoglobina glicosilada, siendo mayor en mujeres que en hombres.
 
 | Parámetro                      | Hombres       | Mujeres      |
 |--------------------------------|--------------|--------------|
@@ -262,7 +262,7 @@ Se observaron diferencias en los parámetros de algunos nodos, como la influenci
 | Proteína C reactiva (proteina_cr) | 0.259740     | 0.251406     |
 | Sigma (desviación estándar)    | 0.486344     | 0.498629     |
 
-Estos resultados sugieren que, para un mismo aumento en la glucosa, el incremento esperado en la hemoglobina glucosilada es mayor en mujeres que en hombres, lo que podría estar relacionado con diferencias fisiológicas.
+Estos resultados sugieren que, para un mismo aumento en la glucosa, el incremento esperado en la hemoglobina glicosilada es mayor en mujeres que en hombres, lo que podría estar relacionado con diferencias fisiológicas.
 
 # Resultados
 
@@ -272,18 +272,17 @@ Se aplicaron consultas probabilísticas para evaluar la relación entre biomarca
 
 La probabilidad estimada de que un individuo presente niveles elevados de proteína C reactiva bajo condiciones de PM₂.₅ menores o iguales a 155 μg/m³ es de **82.3%**. Esto indica que, incluso en escenarios donde la concentración de partículas finas se mantiene por debajo de este umbral, existe una alta probabilidad de respuesta inflamatoria medida por proteína C reactiva.
 
-En personas de **50 años o más** expuestas a concentraciones de NOx iguales o superiores a 40 ppb, la probabilidad de presentar glucosa en ayuno mayor a 126 mg/dL (umbral diagnóstico de diabetes) es de **17.9%**. Este resultado refleja un riesgo moderado que podría estar asociado a la combinación de edad avanzada y exposición a contaminantes.
+En personas de **50 años o más** expuestas a concentraciones de $NOx$ iguales o superiores a 40 ppb, la probabilidad de presentar glucosa en ayuno mayor a 126 mg/dL (umbral diagnóstico de diabetes) es de **17.9%**. Este resultado refleja un riesgo moderado que podría estar asociado a la combinación de edad avanzada y exposición a contaminantes.
 
 
 La probabilidad de presentar colesterol total elevado en condiciones de exposición a **SO₂ ≥ 80 ppb** es de **86.9%**. Esto sugiere una fuerte asociación entre altos niveles de dióxido de azufre y alteraciones en el perfil lipídico, lo cual es relevante para el riesgo cardiovascular.
 
 
 # Conclusiones
-
+Para poder llevar a cabo experimientaciones con datos es de gran relevancia tener cierta noción sobre los datos con los que se están trabajando y con base en ello poder trazar los caminos más adecuados a seguir. En este caso, para la elaboración de este artículo, fue necesario la consulta con especialistas para así entender mejor las bases de datos con las que se trabaja y direccionar la investigación a un camino con mayor sentido, demostrando la suma importancia del trabajo colaborativo y multidisciplinario para la obtención de mejores resultados.
 
 # Referencias
 
 Galera Capilla, M. I. (2020). Redes bayesianas: fundamentos teóricos y uso en R (Trabajo Fin de Grado, Universidad de Almería). Repositorio Institucional UAL. https://repositorio.ual.es/bitstream/handle/10835/19116/GALERA%20CAPILLA%2C%20MARIA%20ISABEL.pdf?sequence=1&isAllowed=y
 
 
-# Apéndices
