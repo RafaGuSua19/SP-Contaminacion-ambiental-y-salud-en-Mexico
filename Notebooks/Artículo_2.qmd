@@ -129,11 +129,20 @@ A partir de cada DAG, se procedió a realizar su ajuste a una Red Bayesiana Gaus
 
 Ante lo anterior, se convirtieron las variables discretas en un factor, aunque esto no cambia el hecho de que su naturaleza es categórica. Ya que los modelos GBN puros asumen que todas las relaciones entre las variables son lineales y pueden ser representadas por regresiones lineales, lo que no es posible con variables discretas o categóricas, probar esta técnica tampoco produjo buenos resultados. Después de una investigación más exhaustiva, se encontró que los intentos de ajustar las estructuras DAG propuestas directamente como una GBN pura fallarán en R porque incluyen variables categóricas, y los criterios de información BIC o AIC no son compatibles con nodos discretos, lo que hace necesario explorar enfoques más avanzados o alternativos para el análisis.
 
+Al notar que era imposible obtener un buen modelo de redes bayesianas gaussianas utilizando variables discretas se decidió eliminarlas por las razones ya mencionadas anteriormente. Con base en esto, se modificaron las DAG's planteadas anteriormente, de tal manera que surgieron las siguientes:
+
+**DAG 1 modificada**
+![Grafo acíclico dirigido 1 con reducción de nodos](nuevadag1.jpg)
+**DAG 2 modificada**
+![Grafo acíclico dirigido 2 con reducción de nodos](nuevadag2.jpg)
+**DAG 3 modificada**
+![Grafo acíclico dirigido 3 con reducción de nodos](nuevadag3.jpg)
+
+
 ### Selección del modelo
 
-Al comparar los valores obtenidos, se eligió el **Modelo 2**, ya que presentó el **BIC y AIC más alto**, lo que indica un mejor equilibrio entre ajuste del modelo y complejidad.  
+Al comparar los valores obtenidos, se eligió el **Modelo 2 actualizado**, ya que presentó el **BIC y AIC más alto**, lo que indica un mejor equilibrio entre ajuste del modelo y complejidad.  
 
-![Grafo acíclico dirigido seleccionado](dag_seleccionada.png)
 
 Este modelo refleja relaciones plausibles desde un punto de vista epidemiológico:  
 
