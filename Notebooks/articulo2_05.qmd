@@ -219,7 +219,7 @@ Las tres estructuras DAG ajustadas fueron evaluadas con los criterios de informa
 
 ## Resultados de queries probabilísticas
 
-## Consulta 1 · Proteína C Reactiva vs **$PM_{2.5}$**
+### Consulta 1 · Proteína C Reactiva vs **$PM_{2.5}$**
 **Pregunta.** ¿Cuál es la probabilidad de que una persona tenga **proteína C reactiva > 10 mg/L** dado que la concentración de **$PM_{2.5}$ $\leq$ 155 μg/m³**?
 
 
@@ -229,7 +229,7 @@ $$
 
 ---
 
-## Consulta 2 · Glucosa y contaminante del aire
+### Consulta 2 · Glucosa y contaminante del aire
 **Pregunta.** ¿Cuál es la probabilidad de que una persona tenga **glucosa en ayuno > 126 mg/dL** dado que es **mayor o igual a 50 años** y está expuesta a **NOx >= 40 ppb**?
 
 $$
@@ -241,7 +241,7 @@ $$
 
 ---
 
-## Consulta 3 · Colesterol total y SO₂
+### Consulta 3 · Colesterol total y SO₂
 **Pregunta.** ¿Cuál es la probabilidad de que una persona tenga **colesterol total > 130 mg/dL** dado un nivel de **SO₂ >= 80 ppb**?
 
 $$
@@ -282,7 +282,7 @@ La probabilidad de presentar colesterol total elevado en condiciones de exposici
 
 
 # Conclusiones
-Para poder llevar a cabo experimientaciones con datos es de gran relevancia tener cierta noción sobre los datos con los que se están trabajando y con base en ello poder trazar los caminos más adecuados a seguir. En este caso, para la elaboración de este artículo, fue necesario la consulta con especialistas para así entender mejor las bases de datos con las que se trabaja y direccionar la investigación a un camino con mayor sentido, demostrando la suma importancia del trabajo colaborativo y multidisciplinario para la obtención de mejores resultados.
+Para poder llevar a cabo experimientaciones con datos es de gran relevancia tener cierta noción sobre los datos con los que se están trabajando y con base en ello poder trazar los caminos más adecuados a seguir. En este caso, para la elaboración de este artículo, fue necesario la consulta con especialistas para así entender mejor las bases de datos con las que se trabaja y direccionar la investigación a un camino con mayor sentido, demostrando la suma importancia del trabajo colaborativo y multidisciplinario para la obtención de mejores resultados. El uso de redes bayesianas gaussianas permitió analizar la relación entre contaminantes ambientales y biomarcadores de salud en la población mexicana, a pesar de las limitaciones para incorporar variables categóricas de manera directa. La selección y ajuste de modelos reveló diferencias en la influencia de variables ambientales y demográficas sobre la salud, así como algunas variaciones por sexo. Estos resultados refuerzan la utilidad de los enfoques probabilísticos en salud pública y destacan la importancia de seguir explorando métodos más flexibles para integrar datos mixtos en futuros estudios.
 
 # Referencias
 
